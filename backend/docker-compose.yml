@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - docker-compose-data:/var/lib/mysql
+      - ./src/main/resources/init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pass
+      - MYSQL_DATABASE=insurance
+
+  adminer:
+    image: adminer:4.8.1
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql
+    ports:
+      - "8080:8080"
+
+volumes:
+  docker-compose-data:
+
