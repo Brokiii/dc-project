@@ -17,3 +17,4 @@ Backend:
 Frontend:
 - Monika Drozd
 - Jakub Nowak
+- Tomasz Żebrowski
