@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Container,
   Typography,
   makeStyles,
 } from "@material-ui/core";
+
   
 const useStyles = makeStyles(({
     root: {
@@ -20,16 +20,6 @@ const useStyles = makeStyles(({
         width: 'auto',
         margin: '50px',
     },
-    button: {
-        backgroundColor: "lightGrey",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "block",
-        margin: "auto",
-        height: '50px',
-        width: 'auto',
-        
-    },
   }));
 
 const Home = () => {
@@ -40,18 +30,9 @@ const classes = useStyles();
         UBEZPIECZALNIA HARNOLDY
       </Typography>
       <Container fixed className={classes.section}>
-        O nas.
-      </Container>
-      <Container fixed className={classes.section}>
-      Skorzystaj z naszego ubezpieczenia.
-        <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button}>Skorzystaj z ubezpieczenia</button></Link>
-      </Container>
-      <Container fixed className={classes.section}>
-      Zgłoś szkodę.
-      <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button}>Zgłoś szkodę</button></Link>
+        Kontakts
       </Container>
     </Container>
-    
   );
 }
   
