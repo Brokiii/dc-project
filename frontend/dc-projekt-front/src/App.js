@@ -1,22 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
 import Login from "./pages/Login";
-import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import Insurance from "./pages/Insurance";
+import Contact from "./pages/Contact";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
       <>
         <BrowserRouter>
+        <Navbar />          
           <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="login" element={<Login/>} />
-              <Route path="insurance" element={<Insurance/>} />
-            </Route>
+            <Route path="/home" element={<Home/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/insurance" element={<Insurance/>} />
+            <Route path="/contact" element={<Contact/>} />
+            <Route path="*" element={<Home/>} />
           </Routes>
+        <Footer />
         </BrowserRouter>
       </>
     );
