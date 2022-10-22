@@ -45,7 +45,6 @@ body {
    color: #fff;
    pointer-events: none;
    transition: .5s;
-
 }
 
 .insurance-box .user-box input:focus~label,
