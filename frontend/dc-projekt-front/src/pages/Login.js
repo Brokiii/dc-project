@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useState } from 'react';
+=======
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useRef, useState, useEffect } from 'react';
+>>>>>>> c8ac754 (added style to login and insurance form view)
 import '../css/login.css';
 
 
@@ -42,7 +47,6 @@ const Login = () => {
                 <div className="login-button-box">
                     <button className="button-login">Zaloguj</button>
                 </div>
-
                 <br/><br/>
             </form>
         </div>
