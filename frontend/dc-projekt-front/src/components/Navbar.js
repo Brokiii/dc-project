@@ -52,6 +52,12 @@ function Navbar() {
             <Link to="/login" className={classes.link}>
               Logowanie
             </Link>
+             <Link to="/client" className={classes.link}>
+               Klient
+             </Link>
+             <Link to="/agent" className={classes.link}>
+               Agent
+             </Link>
             <Link to="/signup" className={classes.link}>
               Rejestracja
             </Link>
