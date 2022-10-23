@@ -1,0 +1,109 @@
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
+import { useRef, useState, useEffect } from 'react';
+import React from 'react'
+import Select from 'react-select'
+import '../css/insurance.css';
+
+const Insurance = () => {
+
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [pesel, setPesel] = useState('');
+    const [email, setEmail] = useState('');
+    const [city, setCity] = useState('');
+    const [insuranceType, setInsuranceType] = useState(null);
+    const [price, setPrice] = useState(0);
+
+    const options = [
+        { value: 'Lager', label: 'Lager', price: 2.0 },
+        { value: 'Porter', label: 'Porter', price: 5.0 },
+        { value: 'Ipa', label: 'Ipa', price: 6.0 }
+    ]
+
+    const handleChange = async (option) => {
+        console.log(option);
+        setPrice(option.price);
+        setInsuranceType(option.value);
+    }
+
+    useEffect(() => {
+
+    }, [email])
+
+    useEffect(() => {
+
+    }, [pesel])
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    }
+
+    return (
+        <div className="insurance-box">
+            <h1>Nowe ubezpieczenie</h1>
+            <br />
+            <br />
+            <form onSubmit={handleSubmit}>
+                <div class="user-box">
+                    <input
+                        type="text" 
+                        id="name"
+                        value={name}  
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        />
+                    <label htmlFor="name"> Imię:</label><br/><br/>
+                </div>
+                <div class="user-box">
+                    <input
+                        type="text" 
+                        id="surname"
+                        value={surname}  
+                        onChange={(e) => setSurname(e.target.value)}
+                        required
+                        />
+                    <label htmlFor="surname"> Nazwisko:</label><br/><br/>
+                </div>
+                <div class="user-box">
+                    <input
+                        type="text" 
+                        id="pesel"
+                        value={pesel}  
+                        onChange={(e) => setPesel(e.target.value)}
+                        required
+                        />
+                    <label htmlFor="pesel"> Pesel:</label><br/><br/>
+                </div>
+                <div class="user-box">
+                    <input
+                        type="text" 
+                        id="email"
+                        value={email}  
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        />
+                    <label htmlFor="email"> Email:</label><br/><br/>
+                </div>
+                <div class="user-box">
+                    <input
+                        type="text" 
+                        id="city"
+                        value={city}  
+                        onChange={(e) => setCity(e.target.value)}
+                        required
+                        />
+                    <label htmlFor="city"> Miasto:</label><br/><br/>
+                </div>
+                <label class="label-insurance"> Typ ubezpieczenia:</label>
+                <Select options={options} onChange={handleChange} />
+                <label class="label-price">Cena:{price}</label>
+                <br/>
+                <div className="insurance-button-box">
+                    <button className="button-insurance">Kup</button>
+                </div>
+            </form>
+        </div>
+    );
+}
+
+export default Insurance;
