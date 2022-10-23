@@ -6,9 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class UserRequest {
-    private String firstName;
-    private String lastName;
+public class UserLoginRequest {
     private String email;
-    private String hashedPassword;
+    private String password;
 }

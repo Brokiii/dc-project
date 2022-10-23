@@ -1,33 +1,44 @@
 package pl.gda.edu.pg.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.*;
+import pl.gda.edu.pg.insurance.entity.Insurance;
 
 import javax.persistence.*;
+import java.util.Set;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 
 @Entity
+@Table(name = "user", schema = "public")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    @Column(nullable = false, unique = true)
+    private String login;
 
     @Column(nullable = false)
-    private String firstName;
-
-    private String lastName;
+    @JsonIgnore
+    private String hashedPassword;
 
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(name = "account_type")
+    private String accountType;
+
     @Column(nullable = false)
-    @JsonIgnore
-    private String password;
+    private String name;
+
+    private String surname;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Insurance> insurances;
 }

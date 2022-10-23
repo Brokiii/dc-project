@@ -1,27 +1,13 @@
 version: '3.9'
 
 services:
-  mysql:
-    image: mysql:8.0
+  postgres:
+    build: .
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - docker-compose-data:/var/lib/mysql
-      - ./src/main/resources/init.sql:/data/application/init.sql
-    command: --init-file /data/application/init.sql
-    environment:
-      - MYSQL_ROOT_PASSWORD=pass
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=pass
-      - MYSQL_DATABASE=insurance
-
-  adminer:
-    image: adminer:4.8.1
-    environment:
-      - ADMINER_DEFAULT_SERVER=mysql
-    ports:
-      - "8080:8080"
-
+      - db:/var/lib/postgresql/data
 volumes:
-  docker-compose-data:
+  db:
+    driver: local
 
