@@ -16,17 +16,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private Long userId;
+    private Long id;
 
     @Column(nullable = false)
-    private String firstName;
+    private String name;
 
-    private String lastName;
+    private String surname;
 
     @Column(unique = true, nullable = false)
     private String email;
 
     @Column(nullable = false)
     @JsonIgnore
+    @Transient
     private String password;
 }

@@ -35,13 +35,13 @@ public class UserService {
             throw new UserAlreadyExistException("User already exist!");
         try {
             User user = User.builder()
-                    .firstName(userRequest.getFirstName())
-                    .lastName(userRequest.getLastName())
+                    .name(userRequest.getFirstName())
+                    .surname(userRequest.getLastName())
                     .email(userRequest.getEmail())
                     .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
                     .build();
             userRepository.save(user);
-            return user.getUserId();
+            return user.getId();
         } catch (Exception e) {
             LOG.error("Creating new user error", e);
             throw new CreateNewUserException("Creating new user with email: " + userRequest.getEmail()+ " error", e);
