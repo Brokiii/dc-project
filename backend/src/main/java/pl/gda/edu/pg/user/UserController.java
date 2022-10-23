@@ -1,5 +1,6 @@
 package pl.gda.edu.pg.user;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.PropertyValueException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.gda.edu.pg.user.entity.User;
+import pl.gda.edu.pg.user.entity.UserLoginRequest;
 import pl.gda.edu.pg.user.entity.UserRequest;
 
 import java.util.List;
@@ -26,31 +28,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<String> createNewUser(
-            @RequestBody UserRequest userRequest
-            ) {
-        try {
-            Long userId = userService.createNewUser(userRequest);
-            LOG.info("Successfully created user with ID: " + userId);
-            return ResponseEntity.ok("Created user with ID: " + userId);
-        } /*catch (ConstraintViolationException e) {
-            LOG.error("User with email " + userRequest.getEmail() + " already exist!", e);
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("User with email " + userRequest.getEmail() + " already exist!");
-        } catch (PropertyValueException e) {
-            LOG.error("Some fields are null!", e);
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Some fields are null!");
-        }*/
-        catch (Exception e) {
-            LOG.error("Creating new user error", e);
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Something went wrong creating new user with email: " + userRequest.getEmail());
-        }
+            @RequestBody UserRequest userRequest) {
+        Long userId = userService.createNewUser(userRequest);
+        LOG.info("Successfully created user with ID: " + userId);
+        return ResponseEntity.ok("Created user with ID: " + userId);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(
+            @RequestBody UserLoginRequest userLoginRequest) {
+        User user = userService.loginGetUser(userLoginRequest);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping()
+    public ResponseEntity<User> getUser(
+            @RequestParam String email
+    ) {
+        User user = userService.getUser(email);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/all")

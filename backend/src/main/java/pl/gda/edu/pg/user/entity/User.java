@@ -1,7 +1,6 @@
 package pl.gda.edu.pg.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
