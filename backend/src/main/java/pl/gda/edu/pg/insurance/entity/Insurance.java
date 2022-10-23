@@ -11,13 +11,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-public class Insurance {
 
+@Entity
+@Table(name = "insurance", schema = "public")
+public class Insurance {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="insurance_id", nullable = false)
+    private Long insuranceId;
 
     @Column(name="good_type", nullable = false)
     private String goodType;
