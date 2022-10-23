@@ -1,5 +1,5 @@
 CREATE TABLE "user"(
-                       "id" INTEGER NOT NULL,
+                       "user_id" SERIAL NOT NULL,
                        "login" VARCHAR(50) NOT NULL,
                        "hashed_password" VARCHAR(200) NULL,
                        "account_type" VARCHAR(50) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE "user"(
                        "surname" VARCHAR(50) NOT NULL
 );
 ALTER TABLE
-    "user" ADD PRIMARY KEY("id");
+    "user" ADD PRIMARY KEY("user_id");
 CREATE TABLE "insurance"(
                             "id" INTEGER NOT NULL,
                             "good_type" VARCHAR(50) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE "appellation"(
 ALTER TABLE
     "appellation" ADD PRIMARY KEY("id");
 ALTER TABLE
-    "insurance" ADD CONSTRAINT "insurance_clientid_foreign" FOREIGN KEY("client_id") REFERENCES "user"("id");
+    "insurance" ADD CONSTRAINT "insurance_clientid_foreign" FOREIGN KEY("client_id") REFERENCES "user"("user_id");
 ALTER TABLE
     "attachment" ADD CONSTRAINT "attachment_insuranceid_foreign" FOREIGN KEY("insurance_id") REFERENCES "insurance"("id");
 ALTER TABLE
