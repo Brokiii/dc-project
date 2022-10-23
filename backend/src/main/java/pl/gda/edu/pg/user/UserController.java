@@ -3,6 +3,7 @@ package pl.gda.edu.pg.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.entity.UserLoginRequest;
-import pl.gda.edu.pg.user.entity.UserRequest;
+import pl.gda.edu.pg.user.entity.UserRegisterRequest;
 
 import java.util.List;
 
@@ -28,17 +29,26 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createNewUser(
-            @RequestBody UserRequest userRequest) {
-        Long userId = userService.createNewUser(userRequest);
-        LOG.info("Successfully created user with ID: " + userId);
-        return ResponseEntity.ok("Created user with ID: " + userId);
+    public ResponseEntity<User> createNewUser(
+            @RequestBody UserRegisterRequest userRegisterRequest) {
+        User user = userService.createNewUser(userRegisterRequest);
+        LOG.info("Successfully created user with ID: " + user.getId());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(
             @RequestBody UserLoginRequest userLoginRequest) {
         User user = userService.loginGetUser(userLoginRequest);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<User> logout(
+            @RequestParam String email) {
+        User user = userService.logoutUser(email);
         return ResponseEntity.ok(user);
     }
 

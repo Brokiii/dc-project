@@ -4,12 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.entity.UserLoginRequest;
-import pl.gda.edu.pg.user.entity.UserRequest;
+import pl.gda.edu.pg.user.entity.UserRegisterRequest;
 import pl.gda.edu.pg.user.exception.CreateNewUserException;
 import pl.gda.edu.pg.user.exception.LoginWrongPasswordException;
 import pl.gda.edu.pg.user.exception.UserAlreadyExistException;
@@ -30,27 +29,28 @@ public class UserService {
     }
 
     @Transactional
-    public Long createNewUser(UserRequest userRequest) throws UserAlreadyExistException, CreateNewUserException {
-        if(userRepository.getUserByEmail(userRequest.getEmail()).isPresent())
+    public User createNewUser(UserRegisterRequest userRegisterRequest) throws UserAlreadyExistException, CreateNewUserException {
+        if(userRepository.getUserByEmail(userRegisterRequest.getEmail()).isPresent())
             throw new UserAlreadyExistException("User already exist!");
         try {
             User user = User.builder()
-                    .name(userRequest.getFirstName())
-                    .surname(userRequest.getLastName())
-                    .email(userRequest.getEmail())
-                    .password(bCryptPasswordEncoder.encode(userRequest.getPassword()))
+                    .login(userRegisterRequest.getEmail())
+                    .hashedPassword(bCryptPasswordEncoder.encode(userRegisterRequest.getPassword()))
+                    .email(userRegisterRequest.getEmail())
+                    .name(userRegisterRequest.getName())
+                    .surname(userRegisterRequest.getSurname())
+                    .accountType(userRegisterRequest.getAccountType())
                     .build();
-            userRepository.save(user);
-            return user.getId();
+            return userRepository.save(user);
         } catch (Exception e) {
             LOG.error("Creating new user error", e);
-            throw new CreateNewUserException("Creating new user with email: " + userRequest.getEmail()+ " error", e);
+            throw new CreateNewUserException("Creating new user with email: " + userRegisterRequest.getEmail()+ " error", e);
         }
     }
 
     public User loginGetUser(UserLoginRequest userLoginRequest) {
         User user = getUser(userLoginRequest.getEmail());
-        if(!bCryptPasswordEncoder.matches(userLoginRequest.getPassword(), user.getPassword()))
+        if(!bCryptPasswordEncoder.matches(userLoginRequest.getPassword(), user.getHashedPassword()))
             throw new LoginWrongPasswordException("Password is wrong");
         return user;
     }
@@ -62,5 +62,10 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
+    }
+
+    public User logoutUser(String email) {
+        return userRepository.getUserByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User not found!"));
     }
 }

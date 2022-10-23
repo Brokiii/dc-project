@@ -6,9 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class UserRequest {
-    private String firstName;
-    private String lastName;
+public class UserRegisterRequest {
+    private String name;
+    private String surname;
     private String email;
     private String password;
+    private String accountType;
 }
