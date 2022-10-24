@@ -1,4 +1,4 @@
-package pl.gda.edu.pg.insurance.entity;
+package pl.gda.edu.pg.insurance.entity.entity;
 
 import lombok.*;
 import pl.gda.edu.pg.user.entity.User;
@@ -30,5 +30,3 @@ public class Insurance {
     @JoinColumn(name = "client_id")
     private User user;
 }
-
-
