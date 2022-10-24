@@ -27,7 +27,7 @@ function Footer() {
     <AppBar position="static">
     <CssBaseline />
     <Toolbar className={classes.root}>
-        Ubezpieczalnia Harnoldy
+     ©2022 Ubezpieczalnia Harnoldy, DC Project
     </Toolbar>
   </AppBar>
   );

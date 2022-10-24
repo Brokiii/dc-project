@@ -30,13 +30,16 @@ const useStyles = makeStyles(({
         width: 'auto',
         
     },
+    typography: {
+      textAlign: "center",
+    },
   }));
 
 const Home = () => {
 const classes = useStyles();
   return (
     <Container fixed className={classes.root}>
-      <Typography component="div">
+      <Typography className={classes.typography}>
         UBEZPIECZALNIA HARNOLDY
       </Typography>
       <Container fixed className={classes.section}>
