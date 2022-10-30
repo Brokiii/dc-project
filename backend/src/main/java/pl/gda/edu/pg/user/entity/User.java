@@ -16,10 +16,11 @@ import java.util.Set;
 @Entity
 @Table(name = "user", schema = "public")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
+    @Column(nullable = false)
+    private Integer Id;
 
     @Column(nullable = false, unique = true)
     private String login;
@@ -31,7 +32,6 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(name = "account_type")
     private String accountType;
 
     @Column(nullable = false)

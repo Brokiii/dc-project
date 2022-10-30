@@ -32,7 +32,7 @@ public class UserController {
     public ResponseEntity<User> createNewUser(
             @RequestBody UserRegisterRequest userRegisterRequest) {
         User user = userService.createNewUser(userRegisterRequest);
-        LOG.info("Successfully created user with ID: " + user.getUserId());
+        LOG.info("Successfully created user with ID: " + user.getId());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(user);
