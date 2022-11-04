@@ -20,16 +20,18 @@ const useStyles = makeStyles(({
     display: "flex",
   },
  logo: {
+    fontFamily:'"Nunito Sans", sans-serif',
     flexGrow: "1",
     cursor: "pointer",
   },
   link: {
+    fontFamily:'"Nunito Sans", sans-serif',
     textDecoration: "none",
     color: "white",
     fontSize: "20px",
     marginLeft: "20px",
     "&:hover": {
-      color: "lightBlue",
+      color: "darkGrey",
       borderBottom: "1px solid white",
     },
   },

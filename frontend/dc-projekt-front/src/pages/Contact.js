@@ -1,24 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Typography,
   makeStyles,
 } from "@material-ui/core";
-
   
 const useStyles = makeStyles(({
     root: {
-        backgroundColor: "lightGrey",
+        fontFamily: '"Nunito Sans", sans-serif',
+        backgroundColor: "#6f6e6f",
         position: "justify",
-        paddingTop: '80px',
-        height: 'auto', //or 1000px
+        padding: '80px',
+        boxShadow: "0 15px 25px rgba(11, 11, 11, 0.7)",
+        borderRadius: "10px",
     },
     section: {
-        backgroundColor: "lightBlue",
+        backgroundColor: "lightGrey",
         position: "justify",
-        height: '300px',
+        height: '200px',
         width: 'auto',
         margin: '50px',
+        borderRadius: '10px',
+        fontSize: "20px",
     },
   }));
 
@@ -26,13 +30,15 @@ const Home = () => {
 const classes = useStyles();
   return (
     <Container fixed className={classes.root}>
-      <Typography component="div">
+      <Typography style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "40px", textAlign: "center"}}>
         UBEZPIECZALNIA HARNOLDY
       </Typography>
       <Container fixed className={classes.section}>
-        Kontakts
+      <h1>Masz pytania?</h1>
+        Skontaktuj się z nami pod adresem harnoldy@piwo.com
       </Container>
     </Container>
+    
   );
 }
   
