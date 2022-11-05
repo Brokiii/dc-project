@@ -1,21 +1,21 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
+// import { useRef, useState, useEffect } from 'react';
+import { useState } from 'react';
 import Select from 'react-select'
-
-import Checkbox from "../components/Checkbox";
-import UploadButton from "../components/UploadButton";
+import '../css/client.css';
 
 import {
-  Container,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+    Container,
+    Typography,
+    makeStyles,
+  } from "@material-ui/core";
+
 
 
 const options = [
-    { value: 'Polisa 1', label: 'Polisa 1', price: 2.0 },
-    { value: 'Polisa 2', label: 'Polisa 2', price: 5.0 },
-    { value: 'Polisa 3', label: 'Polisa 3', price: 6.0 }
+{ value: 'Polisa 1', label: 'Polisa 1', price: 2.0 },
+{ value: 'Polisa 2', label: 'Polisa 2', price: 5.0 },
+{ value: 'Polisa 3', label: 'Polisa 3', price: 6.0 }
 ]
 
 const handleChange = async (option) => {
@@ -34,188 +34,201 @@ const destroyers = [
     { value: 'Zgloszenie szkody 233', label: 'Zgloszenie szkody 233', price: 6.0 }
 ]
 
+
 const useStyles = makeStyles(({
     root: {
-        backgroundColor: "Green",
+        fontFamily: '"Nunito Sans", sans-serif',
+        backgroundColor: "#6f6e6f",
         position: "justify",
-        paddingTop: '80px',
-        height: 'auto', //or 1000px
+        padding: '80px',
+        boxShadow: "0 15px 25px rgba(11, 11, 11, 0.7)",
+        borderRadius: "10px",
     },
     section: {
-        backgroundColor: "Orange",
+        backgroundColor: "lightGrey",
         position: "justify",
-        height: '150px',
+        height: '200px',
         width: 'auto',
         margin: '50px',
+        borderRadius: '10px',
+        fontSize: "25px",
     },
-    button: {
-        backgroundColor: "lightGrey",
-        margin: "auto",
-        height: '50px',
-        width: 'auto',
-
-    }
+    tab: {
+      display: "inline-block",
+      marginLeft: "20px",
+  },
   }));
 
 const Agent = () => {
-const classes = useStyles();
-  return (
-    <Container fixed className={classes.root}>
-      <Typography component="div">
-        AGENT UBEZPIECZENIOWY
-      </Typography>
 
-      <Container fixed className={classes.section} style={{ width:"auto", height:"300px" }} >
-        POLISY UBEZPIECZENIOWE
+    const classes = useStyles();
+    
+    const [fortune1, setFortune1] = useState('');
+    const [fortune2, setFortune2] = useState('');
+    const [fortune3, setFortune3] = useState('');
+    const [reghisid, setRegHisId] = useState('');
 
-        <br /><br />
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    }
 
-        <label class="label-insurance"> Nowe polisy</label>
-        <Select options={polises} onChange={handleChange} />
+    return (
+        <Container fixed className={classes.root}>
+            <Typography style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "40px", textAlign: "center"}}>
+             <h3>AGENT</h3>
+            </Typography>
+            
+            <Container fixed className={classes.section} style={{ width:"1100px" , height:"800px" }} >
+                <h2>Polisy Ubezpieczeniowe</h2>
 
-         <br />
+                <div className="client-box" style={{ width:"800px", height:"650px"  }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Nowe polisy</h3>
 
-        <label htmlFor="customer"> KLIENT:
-        <input
-            id="customer"
-            type="text"
-            value="Jan Kowalski"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
+                    <Select options={polises} onChange={handleChange} />
+                    <br/>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Jan Kowalski" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Klient:</label>
+                        </div>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Lmaborghini Huracan" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Przedmiot:</label>
+                        </div>
 
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Larger" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Rodzaj polisy:</label>
+                        </div>
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Weryfikuj</button>
+                        </div>
 
+                        <div className="client-button-box">
+                            <button className="button-client">Akceptuj</button>
+                        </div>
 
-        <br/>
+                        <br/><br/>
+                    </form>
+                </div>
+            
+            </Container>
 
-        <label htmlFor="item"> PRZEDMIOT:
-        <input
-            id="item"
-            type="text"
-            value="Lamborghini Huracan"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
+            <Container fixed className={classes.section} style={{ width:"1100px", height:"900px"}} >
+                <h2>Polisa ubezpieczeniowa</h2>
+                <div className="client-box" style={{ width:"800px", height:"780px", position:"center", backgroundColor:"rgb(36,200,73)" }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Nowe polisy</h3>
 
-        <br/>
+                    <Select options={destroyers} onChange={handleChange} />
+                    <br/>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Jan Kowalski" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Klient:</label>
+                        </div>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Lmaborghini Huracan" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Przedmiot:</label>
+                        </div>
 
-        <label htmlFor="numberOFRegistration"> RODZAJ POLISY:
-        <input
-            id="numberOFRegistration"
-            type="text"
-            value="Larger"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Larger" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            
+                            <label htmlFor="username"> Rodzaj polisy:</label>
+                        </div>
 
-        <br />
-        <br />
-        <br />
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value="Pęknięty wał korbowy" 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <br/>
+                            <label htmlFor="username" > Opis szkody:</label>
+                        </div>
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Weryfikuj</button>
+                        </div>
 
-        <Link style={{textDecoration: 'none'}} ><button className={classes.button}> Weryfikuj</button></Link>
- <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<Link style={{textDecoration: 'none'}} ><button className={classes.button}> Akceptuj</button></Link>
+                        <div className="client-button-box">
+                            <button className="button-client">Akceptuj</button>
+                        </div>
 
-      </Container>
+                        <br/><br/>
+                    </form>
+                </div>
 
-    <Container fixed className={classes.section} style={{ width:"auto", height:"400px" }} >
-      ZGŁOSZENIA SZKÓD
+            </Container>
 
+            <Container fixed className={classes.section} style={{ height:"450px" }}>
+                <h2>Wskazówki systemu</h2>
 
-              <br /><br />
+                <div className="client-box" style={{ width:"800px", height:"300px", position:"center", backgroundColor:"rgb(36,73,200)" }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Porada</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="reghisid"
+                                type="text" 
+                                value="Wypłać pieniądze z ubezpieczenia" 
+                                onChange={(e) => setRegHisId(e.target.value)}
+                                required
+                            />
+                            
+                        </div>
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Wykonaj</button>
+                        </div>
 
-              <label class="label-insurance"> Nowe szkody</label>
-              <Select options={destroyers} onChange={handleChange} />
+                        <br/><br/>
+                    </form>
+                </div>
+            </Container>
 
-               <br />
-      <label htmlFor="customer"> KLIENT:
-      <input
-          id="customer"
-          type="text"
-          value="Jan Kowalski"
-         // value={user}
-          //onChange={(e) => setUser(e.target.value)}
-          required
-      />
-      </label>
-
-      <br/>
-
-      <label htmlFor="item"> PRZEDMIOT:
-      <input
-          id="item"
-          type="text"
-          value="Lamborghini Huracan"
-         // value={user}
-          //onChange={(e) => setUser(e.target.value)}
-          required
-      />
-      </label>
-
-      <br/>
-
-      <label htmlFor="numberOfRegistration"> RODZAJ POLISY:
-      <input
-          id="numberOfRegistration"
-          type="text"
-          value="Larger"
-         // value={user}
-          //onChange={(e) => setUser(e.target.value)}
-          required
-      />
-      </label>
-
-        <br/>
-      <label htmlFor="numberOfRegistration"> OPIS SZKODY:
-      <input
-          id="numberOfRegistration"
-          type="text"
-          value="Pęknięty wał korbowy, przepalone świece"
-         // value={user}
-          //onChange={(e) => setUser(e.target.value)}
-          required
-      />
-      </label>
-
-      <br />
-      <br />
-      <br />
-
-      <Link style={{textDecoration: 'none'}} ><button className={classes.button}> Weryfikuj</button></Link>
-<span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-<Link style={{textDecoration: 'none'}} ><button className={classes.button}> Akceptuj</button></Link>
-
-   </Container>
-
-      <Container fixed className={classes.section}>
-        WSKAZÓWKI SYSTEMU
-
-                <label htmlFor="good2">
-                <input
-                    id="good2"
-                    type="text"
-                    style={{ width:"800px", height:"50px" }}
-                    value="Wypłać pieniądze z ubezpieczenia"
-                   // value={user}
-                    //onChange={(e) => setUser(e.target.value)}
-                    required
-                />
-                </label>
-      <span> &nbsp;&nbsp;</span>
-      <Link style={{textDecoration: 'none'}}><button className={classes.button}>Wyplac</button></Link>
-
-      </Container>
-
-
-    </Container>
-
-  );
+        </Container>
+        
+    );
 }
 
 export default Agent;

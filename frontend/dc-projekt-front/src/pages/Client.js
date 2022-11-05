@@ -1,176 +1,177 @@
-import React from "react";
+import { useState } from 'react';
 import { Link } from "react-router-dom";
-import Select from 'react-select'
-
-import Checkbox from "../components/Checkbox";
+import '../css/client.css';
 import UploadButton from "../components/UploadButton";
 
 import {
-  Container,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
-
-
-const options = [
-    { value: 'Polisa 1', label: 'Polisa 1', price: 2.0 },
-    { value: 'Polisa 2', label: 'Polisa 2', price: 5.0 },
-    { value: 'Polisa 3', label: 'Polisa 3', price: 6.0 }
-]
-
-const handleChange = async (option) => {
-    console.log(option);
-}
+    Container,
+    Typography,
+    makeStyles,
+  } from "@material-ui/core";
 
 const useStyles = makeStyles(({
     root: {
-        backgroundColor: "Orange",
+        fontFamily: '"Nunito Sans", sans-serif',
+        backgroundColor: "#6f6e6f",
         position: "justify",
-        paddingTop: '80px',
-        height: 'auto', //or 1000px
+        padding: '80px',
+        boxShadow: "0 15px 25px rgba(11, 11, 11, 0.7)",
+        borderRadius: "10px",
     },
     section: {
-        backgroundColor: "lightGreen",
+        backgroundColor: "lightGrey",
         position: "justify",
-        height: '150px',
+        height: '200px',
         width: 'auto',
         margin: '50px',
+        borderRadius: '10px',
+        fontSize: "25px",
     },
-    button: {
-        backgroundColor: "lightGrey",
-        margin: "auto",
-        height: '50px',
-        width: 'auto',
-
-    }
+    tab: {
+      display: "inline-block",
+      marginLeft: "20px",
+  },
   }));
 
 const Client = () => {
-const classes = useStyles();
-  return (
-    <Container fixed className={classes.root}>
-      <Typography component="div">
-        KLIENT
-      </Typography>
 
-      <Container fixed className={classes.section} style={{ width:"auto", height:"250px" }} >
-        UBEZPIECZENIE 3 DÓBR
+    const classes = useStyles();
+    
+    const [fortune1, setFortune1] = useState('');
+    const [fortune2, setFortune2] = useState('');
+    const [fortune3, setFortune3] = useState('');
+    const [reghisid, setRegHisId] = useState('');
 
-        <br /><br />
-        <label htmlFor="good1"> DOBRO 1:
-        <input
-            id="good1"
-            type="text"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+    }
 
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <UploadButton label="blablabla"/>
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button} style={{ width:"200px", height:"20px" }} >Skorzystaj z ubezpieczenia</button></Link>
-        <br />
+    return (
+        <Container fixed className={classes.root}>
+            <Typography style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "40px", textAlign: "center"}}>
+             <h3>KLIENT</h3>
+            </Typography>
+            
+            <Container fixed className={classes.section} style={{ height:"600px", width:"1100px" }} >
+                <h2>Ubezpieczenie 3 dóbr</h2>
 
-        <label htmlFor="good2"> DOBRO 2:
-        <input
-            id="good2"
-            type="text"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
+                <div className="client-box">
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Przedmiot 1</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="fortune1name"
+                                type="text" 
+                                value={fortune1} 
+                                onChange={(e) => setFortune1(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Nazwa:</label>
+                        </div>
 
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <UploadButton label="blablabla"/>
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button} style={{ width:"200px", height:"20px" }} >Skorzystaj z ubezpieczenia</button></Link>
-        <br />
+                        <UploadButton className="clien-button-box"/>
 
-        <label htmlFor="good3"> DOBRO 3:
-        <input
-            id="good3"
-            type="text"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
-
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <UploadButton label="blablabla"/>
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button} style={{ width:"200px", height:"20px" }} >Skorzystaj z ubezpieczenia</button></Link>
-        <br />
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Ubezpiecz przedmiot</button>
+                        </div>
 
 
-          <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <br/><br/>
+                    </form>
+                </div>
 
-              <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <div className="client-box" style={{ position:"center", backgroundColor:"rgb(36,180,73)" }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Przedmiot 2</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="fortune2name"
+                                type="text" 
+                                value={fortune2} 
+                                onChange={(e) => setFortune2(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Nazwa:</label>
+                        </div>
 
-              <Checkbox label="Czy pragnie Pan/i otrzymywać powiadomienia o etapach sprawy e-mailem ?" />
-              <br />
-        <Link style={{textDecoration: 'none'}} to="/insurance"><button className={classes.button}> Ubezpiecz majątek </button></Link>
+                        <UploadButton className="clien-button-box"/>
 
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Ubezpiecz przedmiot</button>
+                        </div>
 
-      </Container>
+                        <br/><br/>
+                    </form>
+                </div>
 
-      <Container fixed className={classes.section} style={{ width:"auto", height:"200px" }}>
-      POLISA UBEZPIECZENIOWA
-      <br />
-      <br />
+                
+                <div className="client-box" style={{ position:"center", backgroundColor:"rgb(36,73,200)" }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Przedmiot 3</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="fortune3name"
+                                type="text" 
+                                value={fortune3} 
+                                onChange={(e) => setFortune3(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Nazwa:</label>
+                        </div>
 
-        <label class="label-insurance"> Typ ubezpieczenia:</label>
-        <Select options={options} onChange={handleChange} />
-        <br />
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link style={{textDecoration: 'none'}} ><button className={classes.button}>Otrzymaj polisę w formie PDF e-mailem</button></Link>
-        <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <Link style={{textDecoration: 'none'}} ><button className={classes.button}>Pobierz polisę ze strony</button></Link>
+                        <UploadButton className="clien-button-box"/>
 
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Ubezpiecz przedmiot</button>
+                        </div>
 
+                        <br/><br/>
+                    </form>
+                </div>
+            </Container>
 
-      </Container>
+            <Container fixed className={classes.section}>
+                <h2>Polisa ubezpieczeniowa</h2>
+                <Link to="/insurance"><button className="button-login">Skorzystaj z ubezpieczenia</button></Link>
+            </Container>
 
-      <Container fixed className={classes.section}>
-        ZGŁOSZENIE SZKODY
+            <Container fixed className={classes.section}>
+                <h2>Zgłoszenie szkody</h2>
+                <Link to="/insurance"><button className="button-login">Zgłoś szkodę</button></Link>
+            </Container>
 
-                <label htmlFor="good2"> 
-                <input
-                    id="good2"
-                    type="text"
-                    style={{ width:"800px", height:"50px" }}
-                   // value={user}
-                    //onChange={(e) => setUser(e.target.value)}
-                    required
-                />
-                </label>
-      <span> &nbsp;&nbsp;</span>
-      <Link style={{textDecoration: 'none'}}><button className={classes.button}>Zglos</button></Link>
+            <Container fixed className={classes.section} style={{ height:"450px" }}>
+                <h2>Rejestr historii zgłoszeń</h2>
 
-      </Container>
+                <div className="client-box" style={{ width:"800px", height:"300px", position:"center", backgroundColor:"rgb(36,73,200)" }}>
+                    <h3 style={{fontFamily:'"Nunito Sans", sans-serif', fontSize: "25px", textAlign: "center"}}>Wpisz numer zgłoszenia i zobacz historię</h3>
+                    <form onSubmit={handleSubmit}>
+                        <div class="user-box">
+                            <input 
+                                id="reghisid"
+                                type="text" 
+                                value={reghisid} 
+                                onChange={(e) => setRegHisId(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="username"> Numer zgłoszenia:</label>
+                        </div>
+                        
+                        <div className="client-button-box">
+                            <button className="button-client">Szukaj</button>
+                        </div>
 
-      <Container fixed className={classes.section}>
-        WPISZ NUMER ZGŁOSZENIA I ZOBACZ HISTORIĘ:
+                        <br/><br/>
+                    </form>
+                </div>
+            </Container>
 
-        <label htmlFor="numberOfRegitration">
-        <input
-            id="numberOfRegitration"
-            type="text"
-           // value={user}
-            //onChange={(e) => setUser(e.target.value)}
-            required
-        />
-        </label>
-      <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;</span>
-        <Link style={{position: "Center"}}><button className={classes.button}> Szukaj </button></Link>
-      </Container>
-
-    </Container>
-
-  );
+        </Container>
+        
+    );
 }
 
 export default Client;

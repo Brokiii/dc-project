@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import '../css/client.css';
 const Button = styled.button`
   /* Insert your favorite CSS code to style a button */
-`;
+`
+;
 const UploadButton = props => {
   const hiddenFileInput = React.useRef(null);
 
@@ -15,14 +17,16 @@ const UploadButton = props => {
   };
   return (
     <>
-      <Button onClick={handleClick}>
-        Upload a file
-      </Button>
-      <input type="file"
+      <div className="client-button-box">             
+      <Button className="button-upload" onClick={handleClick}>
+        <input type="file"
              ref={hiddenFileInput}
              onChange={handleChange}
-             style={{display:'none'}}
+             style={{}}
       />
+      </Button>
+
+      </div>
     </>
   );
 };
