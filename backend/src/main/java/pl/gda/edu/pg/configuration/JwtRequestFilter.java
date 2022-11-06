@@ -20,11 +20,16 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
     MyUserDetailsService myUserDetailsService;
     JwtUtil jwtUtil;
+    JwtBlackList jwtBlackList;
 
     @Autowired
-    public JwtRequestFilter(MyUserDetailsService myUserDetailsService, JwtUtil jwtUtil) {
+    public JwtRequestFilter(
+            MyUserDetailsService myUserDetailsService,
+            JwtUtil jwtUtil,
+            JwtBlackList jwtBlackList) {
         this.myUserDetailsService = myUserDetailsService;
         this.jwtUtil = jwtUtil;
+        this.jwtBlackList = jwtBlackList;
     }
 
     @Override
@@ -38,6 +43,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("JWT ")) {
             jwt = authHeader.substring(4);
             username = jwtUtil.extractUsername(jwt);
+        }
+
+        if(request.getRequestURI().contains("/api/user/logout")) {
+            jwtBlackList.addToBlackList(jwt);
+        } else {
+            if(jwtBlackList.jwtOnBlacklist(jwt)) {
+                filterChain.doFilter(request, response);
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
