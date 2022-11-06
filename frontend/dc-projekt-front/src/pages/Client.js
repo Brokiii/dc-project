@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import '../css/client.css';
 import UploadButton from "../components/UploadButton";
 
+
 import {
     Container,
     Typography,
@@ -33,10 +34,14 @@ const useStyles = makeStyles(({
   },
   }));
 
+
+
 const Client = () => {
 
     const classes = useStyles();
     
+
+
     const [fortune1, setFortune1] = useState('');
     const [fortune2, setFortune2] = useState('');
     const [fortune3, setFortune3] = useState('');
@@ -136,6 +141,11 @@ const Client = () => {
             <Container fixed className={classes.section}>
                 <h2>Polisa ubezpieczeniowa</h2>
                 <Link to="/insurance"><button className="button-login">Skorzystaj z ubezpieczenia</button></Link>
+
+                <a href="https://drive.google.com/file/d/1KYoZNbAx4FYqlTyPlE-wkUnw17NG5LVl/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
+                    <button className="button-client"> Pobierz polisę ubezpieczeniową</button>
+                </a>
+                
             </Container>
 
             <Container fixed className={classes.section}>
@@ -160,7 +170,7 @@ const Client = () => {
                             <label htmlFor="username"> Numer zgłoszenia:</label>
                         </div>
                         
-                        <div className="client-button-box">
+                        <div className="client-button-box" download="">
                             <button className="button-client">Szukaj</button>
                         </div>
 
