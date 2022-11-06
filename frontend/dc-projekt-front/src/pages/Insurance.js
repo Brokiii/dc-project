@@ -32,7 +32,7 @@ const Insurance = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
+
     }
 
     return (
