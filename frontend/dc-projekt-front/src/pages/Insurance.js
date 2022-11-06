@@ -10,8 +10,11 @@ const Insurance = () => {
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [insuranceType, setInsuranceType] = useState(null);
     const [price, setPrice] = useState(0);
+    const [goodPass, setGoodPass] = useState(false);
 
     const options = [
         { value: 'Lager', label: 'Lager', price: 2.0 },
@@ -25,14 +28,36 @@ const Insurance = () => {
         setInsuranceType(option.value);
     }
 
-    useEffect(() => {
+    const checkPassword = async (repeatPassword) => {
+        if (repeatPassword === password && password !== "") {
+            setGoodPass(true);
+        }
+        else {
+            setGoodPass(false);
+        }
+    }
 
-    }, [email])
+    useEffect(() => {
+        checkPassword(repeatPassword)
+    }, [repeatPassword, password])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const jsonToSend = JSON.stringify({
+            name,
+            surname,
+            email,
+            password,
+            accountType:"client"
+        });
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: jsonToSend
+        };
+        fetch("http://localhost:8080/register", requestOptions)
+            .then(response => response.json())
 
-        
     }
 
     return (
@@ -81,6 +106,29 @@ const Insurance = () => {
                         required
                     />
                 </div>
+                <div className="user-box">
+                    <label htmlFor="password"> Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <br />
+                <div className="user-box">
+                    <label htmlFor="password"> Repeat password:</label>
+                    <input
+                        type="password"
+                        id="repeatPassword"
+                        value={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                {goodPass ? <span style={{ color: "green",backgroundColor:"white" }}>Passwords are the same</span> : <span style={{ color: "red",backgroundColor:"white" }}>Not the same passwords</span>}
+                <br />
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
                 <label class="label-price">Cena:{price} zł</label>
