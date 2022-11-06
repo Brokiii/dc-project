@@ -9,3 +9,5 @@ spring:
 jpa:
   hibernate:
     ddl-auto: create # When you launch the application for the first time - switch "none" at "create"
+
+
