@@ -39,6 +39,7 @@ public class User {
 
     private String surname;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Set<Insurance> insurances;
 }

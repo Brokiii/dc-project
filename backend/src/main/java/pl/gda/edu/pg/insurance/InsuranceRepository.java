@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 
 @Repository
-public interface InsuranceRepository extends CrudRepository<Insurance, Long> {
+public interface InsuranceRepository extends CrudRepository<Insurance, Integer> {
 }

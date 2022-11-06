@@ -14,7 +14,7 @@ CREATE TABLE "insurance"(
                             "good_type" VARCHAR(50) NOT NULL,
                             "client_id" INTEGER NOT NULL,
                             "insurance_type" VARCHAR(50) NOT NULL,
-                            "agent_id" INTEGER NOT NULL
+                            "agent_id" INTEGER
 );
 ALTER TABLE
     "insurance" ADD PRIMARY KEY("id");
