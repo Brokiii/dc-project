@@ -6,6 +6,7 @@ import '../css/insurance.css';
 
 const Insurance = () => {
 
+    const navigate = useNavigate();
     const [login, setLogin] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -15,6 +16,7 @@ const Insurance = () => {
     const [insuranceType, setInsuranceType] = useState(null);
     const [price, setPrice] = useState(0);
     const [goodPass, setGoodPass] = useState(false);
+    const [error, setError] = useState(false);
 
     const options = [
         { value: 'Lager', label: 'Lager', price: 2.0 },
@@ -43,20 +45,28 @@ const Insurance = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const jsonToSend = JSON.stringify({
-            name,
-            surname,
-            email,
-            password,
-            accountType:"client"
-        });
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: jsonToSend
-        };
-        fetch("http://localhost:8080/register", requestOptions)
-            .then(response => response.json())
+        if (goodPass === true) {
+            const jsonToSend = JSON.stringify({
+                name,
+                surname,
+                email,
+                password,
+                accountType: "client"
+            });
+            console.log(jsonToSend);
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: jsonToSend
+            };
+            fetch("http://localhost:8081/register", requestOptions)
+                .then(response => response.json())
+                .then(navigate("/home"))
+                .then(setError(false))
+        }
+        else{
+            setError(true);
+        }
 
     }
 
@@ -127,8 +137,9 @@ const Insurance = () => {
                         required
                     />
                 </div>
-                {goodPass ? <span style={{ color: "green",backgroundColor:"white" }}>Passwords are the same</span> : <span style={{ color: "red",backgroundColor:"white" }}>Not the same passwords</span>}
+                {goodPass ? <span style={{ color: "green", backgroundColor: "white" }}>Passwords are the same</span> : <span style={{ color: "red", backgroundColor: "white" }}>Not the same passwords</span>}
                 <br />
+                <br/>
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
                 <label class="label-price">Cena:{price} zł</label>
@@ -136,6 +147,7 @@ const Insurance = () => {
                 <div className="insurance-button-box">
                     <button className="button-insurance">Kup</button>
                 </div>
+                {error ? <span style={{ color: "red", backgroundColor: "white" }}>Could not buy</span> : <span></span>}
             </form>
         </div>
     );
