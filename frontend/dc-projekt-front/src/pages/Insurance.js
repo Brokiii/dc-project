@@ -45,6 +45,7 @@ const Insurance = () => {
             <br />
             <form onSubmit={handleSubmit}>
                 <div class="user-box">
+                    <label htmlFor="name"> Imię:</label>
                     <input
                         type="text" 
                         id="name"
@@ -52,9 +53,9 @@ const Insurance = () => {
                         onChange={(e) => setName(e.target.value)}
                         required
                         />
-                    <label htmlFor="name"> Imię:</label><br/><br/>
                 </div>
                 <div class="user-box">
+                    <label htmlFor="surname"> Nazwisko:</label>
                     <input
                         type="text" 
                         id="surname"
@@ -62,9 +63,9 @@ const Insurance = () => {
                         onChange={(e) => setSurname(e.target.value)}
                         required
                         />
-                    <label htmlFor="surname"> Nazwisko:</label><br/><br/>
                 </div>
                 <div class="user-box">
+                    <label htmlFor="pesel"> Pesel:</label>
                     <input
                         type="text" 
                         id="pesel"
@@ -72,9 +73,9 @@ const Insurance = () => {
                         onChange={(e) => setPesel(e.target.value)}
                         required
                         />
-                    <label htmlFor="pesel"> Pesel:</label><br/><br/>
                 </div>
                 <div class="user-box">
+                    <label htmlFor="email"> Email:</label>
                     <input
                         type="text" 
                         id="email"
@@ -82,21 +83,20 @@ const Insurance = () => {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                         />
-                    <label htmlFor="email"> Email:</label><br/><br/>
                 </div>
                 <div class="user-box">
+                    <label htmlFor="city"> Miasto:</label>
                     <input
                         type="text" 
                         id="city"
                         value={city}  
                         onChange={(e) => setCity(e.target.value)}
                         required
-                        />
-                    <label htmlFor="city"> Miasto:</label><br/><br/>
+                    />
                 </div>
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
-                <label class="label-price">Cena:{price}</label>
+                <label class="label-price">Cena:{price} zł</label>
                 <br/>
                 <div className="insurance-button-box">
                     <button className="button-insurance">Kup</button>

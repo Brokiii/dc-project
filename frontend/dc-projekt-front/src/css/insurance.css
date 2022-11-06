@@ -40,14 +40,12 @@ body {
 
 .insurance-box .user-box label {
    text-align:left;
-   position: relative;
-   left: 0;
-   top: -60px;
    padding: 10px 0;
    font-size: 16px;
    color: #fff;
    pointer-events: none;
    transition: .5s;
+
 }
 
 .insurance-box .user-box input:focus~label,
@@ -86,10 +84,12 @@ body {
 
 .label-insurance{
     font-size: 20px;
+    color: #fff;
 }
 
 .label-price{
     font-size: 20px;
+    color: #fff;
 }
 
 input:-webkit-autofill,
