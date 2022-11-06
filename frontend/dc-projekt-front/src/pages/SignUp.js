@@ -18,7 +18,7 @@ const SignUp = () => {
         <div className="login-box">
             <br />
             <br />
-            <h1>Rejestracja</h1>
+            <h1>Rejestracja Agenta</h1>
             <form onSubmit={handleSubmit}>
                 <div className="user-box">
                     <input 

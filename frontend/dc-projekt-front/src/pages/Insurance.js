@@ -6,11 +6,10 @@ import '../css/insurance.css';
 
 const Insurance = () => {
 
+    const [login, setLogin] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [pesel, setPesel] = useState('');
     const [email, setEmail] = useState('');
-    const [city, setCity] = useState('');
     const [insuranceType, setInsuranceType] = useState(null);
     const [price, setPrice] = useState(0);
 
@@ -30,12 +29,10 @@ const Insurance = () => {
 
     }, [email])
 
-    useEffect(() => {
-
-    }, [pesel])
-
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        
     }
 
     return (
@@ -45,59 +42,49 @@ const Insurance = () => {
             <br />
             <form onSubmit={handleSubmit}>
                 <div class="user-box">
+                    <label htmlFor="login"> Login:</label>
+                    <input
+                        type="text"
+                        id="login"
+                        value={login}
+                        onChange={(e) => setLogin(e.target.value)}
+                        required
+                    />
+                </div>
+                <div class="user-box">
                     <label htmlFor="name"> Imię:</label>
                     <input
-                        type="text" 
+                        type="text"
                         id="name"
-                        value={name}  
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        />
+                    />
                 </div>
                 <div class="user-box">
                     <label htmlFor="surname"> Nazwisko:</label>
                     <input
-                        type="text" 
+                        type="text"
                         id="surname"
-                        value={surname}  
+                        value={surname}
                         onChange={(e) => setSurname(e.target.value)}
                         required
-                        />
-                </div>
-                <div class="user-box">
-                    <label htmlFor="pesel"> Pesel:</label>
-                    <input
-                        type="text" 
-                        id="pesel"
-                        value={pesel}  
-                        onChange={(e) => setPesel(e.target.value)}
-                        required
-                        />
+                    />
                 </div>
                 <div class="user-box">
                     <label htmlFor="email"> Email:</label>
                     <input
-                        type="text" 
+                        type="text"
                         id="email"
-                        value={email}  
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                        />
-                </div>
-                <div class="user-box">
-                    <label htmlFor="city"> Miasto:</label>
-                    <input
-                        type="text" 
-                        id="city"
-                        value={city}  
-                        onChange={(e) => setCity(e.target.value)}
                         required
                     />
                 </div>
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
                 <label class="label-price">Cena:{price} zł</label>
-                <br/>
+                <br />
                 <div className="insurance-button-box">
                     <button className="button-insurance">Kup</button>
                 </div>
