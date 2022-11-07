@@ -2,11 +2,13 @@ import { Link, useNavigate, useLocation, useSearchParams } from "react-router-do
 import { useRef, useState, useEffect } from 'react';
 import React from 'react'
 import Select from 'react-select'
+import useAuth from "../hooks/useAuth";
 import '../css/insurance.css';
 
 const Insurance = () => {
 
     const navigate = useNavigate();
+    const { auth, setAuth } = useAuth();
     const [login, setLogin] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -37,6 +39,7 @@ const Insurance = () => {
         else {
             setGoodPass(false);
         }
+        console.log(auth?.token);
     }
 
     useEffect(() => {
@@ -59,12 +62,18 @@ const Insurance = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: jsonToSend
             };
-            fetch("http://localhost:8081/register", requestOptions)
-                .then(response => response.json())
-                .then(navigate("/home"))
-                .then(setError(false))
+            try {
+                const response = await fetch("http://localhost:8081/register", requestOptions)
+
+                navigate("/home");
+                setError(false);
+            }
+            catch (err) {
+                setError(true);
+            }
+
         }
-        else{
+        else {
             setError(true);
         }
 
@@ -139,7 +148,7 @@ const Insurance = () => {
                 </div>
                 {goodPass ? <span style={{ color: "green", backgroundColor: "white" }}>Passwords are the same</span> : <span style={{ color: "red", backgroundColor: "white" }}>Not the same passwords</span>}
                 <br />
-                <br/>
+                <br />
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
                 <label class="label-price">Cena:{price} zł</label>
