@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.gda.edu.pg.configuration.authentication.AuthenticationResponse;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.entity.UserLoginRequest;
 import pl.gda.edu.pg.user.entity.UserRegisterRequest;
@@ -39,10 +40,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(
+    public ResponseEntity<AuthenticationResponse> login(
             @RequestBody UserLoginRequest userLoginRequest) {
-        User user = userService.loginGetUser(userLoginRequest);
-        return ResponseEntity.ok(user);
+        String jwt = userService.authenticateUser(userLoginRequest);
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @GetMapping("/logout")

@@ -1,8 +1,10 @@
 package pl.gda.edu.pg.user.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 
