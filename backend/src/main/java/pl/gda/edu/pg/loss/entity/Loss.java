@@ -1,17 +1,14 @@
 package pl.gda.edu.pg.loss.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -42,6 +39,11 @@ public class Loss {
     @Size(max = 1500)
     @NotNull
     private String reason;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "insurance_id")
+    private Insurance insurance;
 
     public static Loss CreateRequestToLossMapper(CreateLossRequest createLossRequest)
     {

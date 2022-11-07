@@ -2,7 +2,7 @@ package pl.gda.edu.pg.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import pl.gda.edu.pg.insurance.entity.Insurance;
+import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 
 import javax.persistence.*;
 import java.util.Set;
