@@ -1,4 +1,5 @@
 import React from "react";
+import useAuth from "../hooks/useAuth";
 import {
   AppBar,
   Toolbar,
@@ -6,26 +7,26 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles(({
   root: {
     background: "grey",
     position: "fixed",
     width: "100%",
-    height: "50px",  
+    height: "50px",
   },
   navlinks: {
     marginLeft: "10px",
     display: "flex",
   },
- logo: {
-    fontFamily:'"Nunito Sans", sans-serif',
+  logo: {
+    fontFamily: '"Nunito Sans", sans-serif',
     flexGrow: "1",
     cursor: "pointer",
   },
   link: {
-    fontFamily:'"Nunito Sans", sans-serif',
+    fontFamily: '"Nunito Sans", sans-serif',
     textDecoration: "none",
     color: "white",
     fontSize: "20px",
@@ -37,8 +38,18 @@ const useStyles = makeStyles(({
   },
 }));
 
+
 function Navbar() {
+  const navigate = useNavigate();
   const classes = useStyles();
+  const { auth, setAuth } = useAuth();
+
+  console.log(auth.token);
+  function logout() {
+    localStorage.clear();
+    setAuth('');
+    navigate('/login');
+  }
 
   return (
     <AppBar position="static">
@@ -47,20 +58,20 @@ function Navbar() {
         <Typography variant="h4" className={classes.logo}>
           DC Project
         </Typography>
-          <div className={classes.navlinks}>
-            <Link to="/" className={classes.link}>
-              Strona główna
-            </Link>
-            <Link to="/login" className={classes.link}>
-              Logowanie
-            </Link>
-            <Link to="/signup" className={classes.link}>
-              Rejestracja
-            </Link>
-            <Link to="/contact" className={classes.link}>
-              Kontakt
-            </Link>
-          </div>
+        <div className={classes.navlinks}>
+          <Link to="/" className={classes.link}>
+            Strona główna
+          </Link>
+          <Link to="/signup" className={classes.link}>
+            Rejestracja
+          </Link>
+          <Link to="/contact" className={classes.link}>
+            Kontakt
+          </Link>
+          {(Object.keys(auth).length === 0) ? <Link to="/login" className={classes.link}>
+            Logowanie
+          </Link> : <button onClick={logout}></button>}
+        </div>
       </Toolbar>
     </AppBar>
   );
