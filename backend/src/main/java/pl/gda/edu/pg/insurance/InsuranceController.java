@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 import pl.gda.edu.pg.insurance.entity.entity.InsuranceCreationRequest;
+import pl.gda.edu.pg.insurance.entity.entity.InsuranceDownload;
 import pl.gda.edu.pg.insurance.entity.entity.InsuranceUpdateAgentRequest;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class InsuranceController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Insurance>> getAllInsurances(){
-        List<Insurance> allInsurances = insuranceService.findAll();
+    public ResponseEntity<List<Insurance>> getAllInsurances(@RequestParam String email){
+        List<Insurance> allInsurances = insuranceService.findAllForUser(email);
         return new ResponseEntity<>(allInsurances, HttpStatus.OK);
     }
 
@@ -57,6 +58,13 @@ public class InsuranceController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<InsuranceDownload> getInsuranceDto(@PathVariable("id") int id){
+        InsuranceDownload insuranceDownload = insuranceService.createDownloadDto(id);
+        return new ResponseEntity<>(insuranceDownload, HttpStatus.OK);
     }
 
 }
