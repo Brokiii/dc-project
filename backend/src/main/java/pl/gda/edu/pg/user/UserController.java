@@ -38,7 +38,9 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody UserLoginRequest userLoginRequest) {
         String jwt = userService.authenticateUser(userLoginRequest);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        User user = userService.getUser(userLoginRequest.getEmail());
+        return ResponseEntity.ok(new AuthenticationResponse(
+                jwt, user.getAccountType(), user.getEmail()));
     }
 
     @GetMapping("/logout")
