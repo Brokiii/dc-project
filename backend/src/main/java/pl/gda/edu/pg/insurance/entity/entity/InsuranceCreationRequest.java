@@ -9,5 +9,5 @@ public class InsuranceCreationRequest {
 
     private String goodType;
     private String insuranceType;
-    private String clientId;
+    private String email;
 }
