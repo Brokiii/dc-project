@@ -1,5 +1,6 @@
 import React from "react";
 import useAuth from "../hooks/useAuth";
+import { useEffect,useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -36,6 +37,11 @@ const useStyles = makeStyles(({
       borderBottom: "1px solid white",
     },
   },
+  button: {
+    fontFamily: '"Nunito Sans", sans-serif',
+    textDecoration: "none",
+    marginLeft: "20px",
+  }
 }));
 
 
@@ -43,11 +49,25 @@ function Navbar() {
   const navigate = useNavigate();
   const classes = useStyles();
   const { auth, setAuth } = useAuth();
+  const [isLogged, setIsLogged] = useState(false);
 
-  console.log(auth.token);
+
+  useEffect(() => {
+    if(localStorage.getItem("token"))
+    {
+      setIsLogged(true);
+    }
+    else
+    {
+      setIsLogged(false);
+    }
+}, [])
+
+  console.log(auth?.token);
   function logout() {
     localStorage.clear();
     setAuth('');
+    window.location.reload();
     navigate('/login');
   }
 
@@ -56,21 +76,28 @@ function Navbar() {
       <CssBaseline />
       <Toolbar className={classes.root}>
         <Typography variant="h4" className={classes.logo}>
-          DC Project
+          {isLogged ?
+          localStorage.getItem("email")
+          :
+          <div>DC Projekt</div>
+        }
         </Typography>
         <div className={classes.navlinks}>
           <Link to="/" className={classes.link}>
             Strona główna
           </Link>
+          {!isLogged ?
           <Link to="/signup" className={classes.link}>
             Rejestracja
-          </Link>
+          </Link>: <></>}
           <Link to="/contact" className={classes.link}>
             Kontakt
           </Link>
-          {(Object.keys(auth).length === 0) ? <Link to="/login" className={classes.link}>
+          {(localStorage.getItem("token") === null) ? 
+          <Link to="/login" className={classes.link}>
             Logowanie
-          </Link> : <button onClick={logout}></button>}
+          </Link> : 
+          <button className={classes.button} onClick={logout}>Wyloguj</button>}
         </div>
       </Toolbar>
     </AppBar>

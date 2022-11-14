@@ -24,12 +24,21 @@ const Login = () => {
             body: jsonToSend
         };
         try {
-            const response = await fetch("http://localhost:8081/login", requestOptions)
+            await fetch("http://localhost:8081/api/user/login", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                const token = data?.jwt;
+                const email = data?.email; 
+                const type = data?.accountType;
+                localStorage.setItem('token', token);
+                localStorage.setItem('email', email);
+                localStorage.setItem('type', type);
+                console.log(data);
+                setAuth({ token: token, email: email, type:type})
+            })
             navigate("/home");
+            window.location.reload();
             setError(false);
-            const token = response?.data?.jwt;
-            localStorage.setItem('token', token);
-            setAuth({ token: token})
         }
         catch (err) {
             setError(true);

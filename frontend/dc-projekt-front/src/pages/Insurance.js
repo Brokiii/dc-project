@@ -50,6 +50,7 @@ const Insurance = () => {
         event.preventDefault();
         if (goodPass === true) {
             const jsonToSend = JSON.stringify({
+                login,
                 name,
                 surname,
                 email,
@@ -63,7 +64,8 @@ const Insurance = () => {
                 body: jsonToSend
             };
             try {
-                const response = await fetch("http://localhost:8081/register", requestOptions)
+                await fetch("http://localhost:8081/api/user/register", requestOptions).then(response =>
+                response.json());
 
                 navigate("/home");
                 setError(false);
