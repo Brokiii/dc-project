@@ -5,12 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.gda.edu.pg.configuration.authentication.AuthenticationResponse;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.entity.UserLoginRequest;
@@ -43,7 +38,9 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody UserLoginRequest userLoginRequest) {
         String jwt = userService.authenticateUser(userLoginRequest);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        User user = userService.getUser(userLoginRequest.getEmail());
+        return ResponseEntity.ok(new AuthenticationResponse(
+                jwt, user.getAccountType(), user.getEmail()));
     }
 
     @GetMapping("/logout")
