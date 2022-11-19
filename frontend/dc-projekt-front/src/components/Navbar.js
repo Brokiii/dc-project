@@ -93,6 +93,12 @@ function Navbar() {
           <Link to="/contact" className={classes.link}>
             Kontakt
           </Link>
+           <Link to="/client" className={classes.link}>
+             Klient
+           </Link>
+           <Link to="/agent" className={classes.link}>
+             Agent
+           </Link>
           {(localStorage.getItem("token") === null) ? 
           <Link to="/login" className={classes.link}>
             Logowanie

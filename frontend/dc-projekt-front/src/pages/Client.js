@@ -145,6 +145,10 @@ const Client = () => {
                 <a href="https://drive.google.com/file/d/1KYoZNbAx4FYqlTyPlE-wkUnw17NG5LVl/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
                     <button className="button-client"> Pobierz polisę ubezpieczeniową</button>
                 </a>
+
+                <a href="https://drive.google.com/file/d/1nkn7_3VM3XBs7ZtWoAtbZkyn0dKoflFe/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
+                    <button className="button-client"> Otrzymaj polisę na email</button>
+                </a>
                 
             </Container>
 
