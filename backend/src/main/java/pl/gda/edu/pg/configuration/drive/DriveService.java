@@ -6,14 +6,15 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import pl.gda.edu.pg.user.entity.User;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
@@ -100,7 +101,22 @@ public class DriveService {
         return parentId;
     }
 
-    public String addFile(@RequestParam MultipartFile file, String filePath) {
+    public String addFile(java.io.File file,String filename, String path, User user) throws IOException {
+        MultipartFile multipartFile = new MockMultipartFile(filename, new FileInputStream(file));
+        return addFile(multipartFile, user.getLogin() + "/" + path);
+    }
+
+    public String addPolicy(java.io.File file,String filename, User user) throws IOException {
+        MultipartFile multipartFile = new MockMultipartFile(filename, new FileInputStream(file));
+        return addFile(multipartFile, user.getLogin() + "/policies");
+    }
+
+    public List<File> getUserPolicies(User user) throws Exception {
+        String id = getFolderId(user.getLogin() + "/policies");
+        return listFolderContent(id);
+    }
+
+    public String addFile(MultipartFile file, String filePath) {
         try {
             String folderId = getFolderId(filePath);
             if (null != file) {

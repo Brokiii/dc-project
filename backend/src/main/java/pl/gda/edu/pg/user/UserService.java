@@ -50,7 +50,7 @@ public class UserService {
             throw new UserAlreadyExistException("User already exist!");
         try {
             User user = User.builder()
-                    .login(userRegisterRequest.getEmail())
+                    .login(userRegisterRequest.getLogin())
                     .hashedPassword(bCryptPasswordEncoder.encode(userRegisterRequest.getPassword()))
                     .email(userRegisterRequest.getEmail())
                     .name(userRegisterRequest.getName())

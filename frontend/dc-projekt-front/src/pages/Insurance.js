@@ -2,17 +2,23 @@ import { Link, useNavigate, useLocation, useSearchParams } from "react-router-do
 import { useRef, useState, useEffect } from 'react';
 import React from 'react'
 import Select from 'react-select'
+import useAuth from "../hooks/useAuth";
 import '../css/insurance.css';
 
 const Insurance = () => {
 
+    const navigate = useNavigate();
+    const { auth, setAuth } = useAuth();
+    const [login, setLogin] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [pesel, setPesel] = useState('');
     const [email, setEmail] = useState('');
-    const [city, setCity] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [insuranceType, setInsuranceType] = useState(null);
     const [price, setPrice] = useState(0);
+    const [goodPass, setGoodPass] = useState(false);
+    const [error, setError] = useState(false);
 
     const options = [
         { value: 'Lager', label: 'Lager', price: 2.0 },
@@ -26,16 +32,53 @@ const Insurance = () => {
         setInsuranceType(option.value);
     }
 
+    const checkPassword = async (repeatPassword) => {
+        if (repeatPassword === password && password !== "") {
+            setGoodPass(true);
+        }
+        else {
+            setGoodPass(false);
+        }
+        console.log(auth?.token);
+    }
+
     useEffect(() => {
-
-    }, [email])
-
-    useEffect(() => {
-
-    }, [pesel])
+        checkPassword(repeatPassword)
+    }, [repeatPassword, password])
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (goodPass === true) {
+            const jsonToSend = JSON.stringify({
+                login,
+                name,
+                surname,
+                email,
+                password,
+                accountType: "client"
+            });
+            console.log(jsonToSend);
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: jsonToSend
+            };
+            try {
+                await fetch("http://localhost:8081/api/user/register", requestOptions).then(response =>
+                response.json());
+
+                navigate("/home");
+                setError(false);
+            }
+            catch (err) {
+                setError(true);
+            }
+
+        }
+        else {
+            setError(true);
+        }
+
     }
 
     return (
@@ -45,62 +88,77 @@ const Insurance = () => {
             <br />
             <form onSubmit={handleSubmit}>
                 <div class="user-box">
+                    <label htmlFor="login"> Login:</label>
                     <input
-                        type="text" 
+                        type="text"
+                        id="login"
+                        value={login}
+                        onChange={(e) => setLogin(e.target.value)}
+                        required
+                    />
+                </div>
+                <div class="user-box">
+                    <label htmlFor="name"> Imię:</label>
+                    <input
+                        type="text"
                         id="name"
-                        value={name}  
+                        value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        />
-                    <label htmlFor="name"> Imię:</label><br/><br/>
+                    />
                 </div>
                 <div class="user-box">
+                    <label htmlFor="surname"> Nazwisko:</label>
                     <input
-                        type="text" 
+                        type="text"
                         id="surname"
-                        value={surname}  
+                        value={surname}
                         onChange={(e) => setSurname(e.target.value)}
                         required
-                        />
-                    <label htmlFor="surname"> Nazwisko:</label><br/><br/>
+                    />
                 </div>
                 <div class="user-box">
+                    <label htmlFor="email"> Email:</label>
                     <input
-                        type="text" 
-                        id="pesel"
-                        value={pesel}  
-                        onChange={(e) => setPesel(e.target.value)}
-                        required
-                        />
-                    <label htmlFor="pesel"> Pesel:</label><br/><br/>
-                </div>
-                <div class="user-box">
-                    <input
-                        type="text" 
+                        type="text"
                         id="email"
-                        value={email}  
+                        value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        />
-                    <label htmlFor="email"> Email:</label><br/><br/>
+                    />
                 </div>
-                <div class="user-box">
+                <div className="user-box">
+                    <label htmlFor="password"> Password:</label>
                     <input
-                        type="text" 
-                        id="city"
-                        value={city}  
-                        onChange={(e) => setCity(e.target.value)}
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
-                        />
-                    <label htmlFor="city"> Miasto:</label><br/><br/>
+                    />
                 </div>
+                <br />
+                <div className="user-box">
+                    <label htmlFor="password"> Repeat password:</label>
+                    <input
+                        type="password"
+                        id="repeatPassword"
+                        value={repeatPassword}
+                        onChange={(e) => setRepeatPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                {goodPass ? <span style={{ color: "green", backgroundColor: "white" }}>Passwords are the same</span> : <span style={{ color: "red", backgroundColor: "white" }}>Not the same passwords</span>}
+                <br />
+                <br />
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
-                <label class="label-price">Cena:{price}</label>
-                <br/>
+                <label class="label-price">Cena:{price} zł</label>
+                <br />
                 <div className="insurance-button-box">
                     <button className="button-insurance">Kup</button>
                 </div>
+                {error ? <span style={{ color: "red", backgroundColor: "white" }}>Could not buy</span> : <span></span>}
             </form>
         </div>
     );
