@@ -1,19 +1,16 @@
 package pl.gda.edu.pg.loss;
 
+import com.google.api.services.drive.model.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pl.gda.edu.pg.configuration.drive.DriveService;
 import pl.gda.edu.pg.loss.entity.CreateLossRequest;
 import pl.gda.edu.pg.loss.entity.Loss;
-import pl.gda.edu.pg.user.entity.User;
-import pl.gda.edu.pg.user.entity.UserLoginRequest;
 
 import java.util.List;
 
@@ -25,6 +22,7 @@ public class LossController {
 
     private final LossService lossService;
 
+    private final DriveService driveService;
 
     @PostMapping
     public ResponseEntity<Loss> create(@RequestBody CreateLossRequest createLossRequest) {
@@ -48,5 +46,20 @@ public class LossController {
     @GetMapping("/all")
     public ResponseEntity<List<Loss>> getAllLosses() {
         return ResponseEntity.ok(lossService.getAll());
+    }
+
+    @PostMapping(value = "/addAttachment", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addAttachment(@RequestBody MultipartFile file,
+                              @RequestParam int lossId,
+                              UsernamePasswordAuthenticationToken principal) {
+        Loss loss = lossService.read(lossId);
+        driveService.addAttachmentToLossReport(file, loss, principal.getName());
+    }
+
+    @GetMapping(value = "/getAttachments")
+    public ResponseEntity<List<File>> getAttachments(@RequestParam int lossId,
+                                                     UsernamePasswordAuthenticationToken principal) throws Exception {
+        Loss loss = lossService.read(lossId);
+        return ResponseEntity.ok(driveService.getLossReportAttachmentIds(loss, principal.getName()));
     }
 }

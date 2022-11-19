@@ -38,9 +38,10 @@ ALTER TABLE
     "loss" ADD PRIMARY KEY("id");
 CREATE TABLE "appellation"(
                               "id" INTEGER NOT NULL,
-                              "loss_reportId" INTEGER NOT NULL,
-                              "decision_comment" VARCHAR(500) NOT NULL,
-                              "client_comment" VARCHAR(500) NOT NULL
+                              "loss_report_id" INTEGER NOT NULL,
+                              "decision_comment" VARCHAR(500) NULL,
+                              "client_comment" VARCHAR(500) NULL,
+                              "considered_favourably" BOOLEAN NULL
 );
 ALTER TABLE
     "appellation" ADD PRIMARY KEY("id");
