@@ -71,6 +71,11 @@ public class InsuranceController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/allFree")
+    public ResponseEntity<List<Insurance>> getInsurancesWithoutAgent() {
+        List<Insurance> insurances = insuranceService.getAllInsurancesWithoutAgent();
+        return new ResponseEntity<>(insurances, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}/download")
     public ResponseEntity<InsuranceDownload> getInsuranceDto(@PathVariable("id") int id) {
