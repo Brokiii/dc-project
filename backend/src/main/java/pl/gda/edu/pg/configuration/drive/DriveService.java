@@ -6,9 +6,11 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.util.logging.Log;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.gda.edu.pg.insurance.InsuranceService;
 import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 import pl.gda.edu.pg.loss.entity.Loss;
 import pl.gda.edu.pg.user.entity.User;
@@ -30,6 +32,7 @@ public class DriveService {
     final private static String ATTACHMENT_INSURANCE_PATH = "attachmentsInsurance/";
     final private static String POLICIES_PATH = "policies/";
     private final Drive drive;
+    private final InsuranceService insuranceService;
 
     public List<File> listEverything() throws IOException {
         // Print the names and IDs for up to 10 files.
@@ -106,6 +109,10 @@ public class DriveService {
         return parentId;
     }
 
+    public void addInsuranceToGoggleDrive() {
+
+    }
+
     public String addFile(java.io.File file,String filename, String path, User user) throws IOException {
         MultipartFile multipartFile = new MockMultipartFile(filename, new FileInputStream(file));
         return addFile(multipartFile, user.getLogin() + "/" + path);
@@ -127,6 +134,21 @@ public class DriveService {
 
     public String addAttachmentToInsurance(MultipartFile file, Insurance insurance, String user) {
         return addFile(file, user + "/" + ATTACHMENT_INSURANCE_PATH  + insurance.getInsuranceId());
+    }
+
+    public String addInsuranceWithLosses(MultipartFile file, String user, String insuranceId) {
+        return addFile(file, user + "/insurance/" + insuranceId);
+    }
+
+    public void deleteOldInsurance(String user, String insuranceId) throws Exception {
+        String folderId = getFolderId(user + "/insurance/" + insuranceId);
+        listFolderContent(folderId).forEach(file -> {
+            try {
+                drive.files().delete(file.getId()).execute();
+            } catch (IOException e) {
+                log.error("Error: ", e);
+            }
+        });
     }
 
     public List<File> getLossReportAttachmentIds(Loss loss, String user) throws Exception {

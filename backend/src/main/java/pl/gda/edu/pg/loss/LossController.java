@@ -25,7 +25,7 @@ public class LossController {
     private final DriveService driveService;
 
     @PostMapping
-    public ResponseEntity<Loss> create(@RequestBody CreateLossRequest createLossRequest) {
+    public ResponseEntity<Loss> create(@RequestBody CreateLossRequest createLossRequest) throws Exception {
         Loss created = lossService.create(createLossRequest);
         return ResponseEntity.ok(created);
     }

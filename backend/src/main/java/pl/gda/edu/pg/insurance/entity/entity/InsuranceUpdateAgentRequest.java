@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InsuranceUpdateAgentRequest {
-    private String userAgentId;
+    private String email;
 }
