@@ -2,7 +2,11 @@ package pl.gda.edu.pg.loss;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import pl.gda.edu.pg.insurance.InsuranceService;
+import pl.gda.edu.pg.insurance.entity.entity.Insurance;
+import pl.gda.edu.pg.insurance.entity.exception.InsuranceNotFoundException;
 import pl.gda.edu.pg.loss.entity.CreateLossRequest;
 import pl.gda.edu.pg.loss.entity.Loss;
 import pl.gda.edu.pg.loss.excpeption.LossNotFoundException;
@@ -16,10 +20,14 @@ import java.util.Optional;
 public class LossService {
 
     private final LossRepository lossRepository;
+    private final InsuranceService insuranceService;
 
-    public Loss create(CreateLossRequest createLossRequest) {
-        Loss loss = Loss.CreateRequestToLossMapper(createLossRequest);
-        return lossRepository.save(loss);
+    public Loss create(CreateLossRequest createLossRequest) throws Exception {
+        Insurance insurance = insuranceService.findById((int) createLossRequest.getInsuranceId()).orElseThrow();
+        Loss loss = Loss.CreateRequestToLossMapper(createLossRequest, insurance);
+        Loss lossSaved = lossRepository.save(loss);
+        insuranceService.sendInsuranceWithLossesToGoogleDrive(insurance.getInsuranceId());
+        return lossSaved;
     }
 
     public Loss read(int lossId) {

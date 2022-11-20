@@ -1,6 +1,12 @@
 package pl.gda.edu.pg.insurance;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import pl.gda.edu.pg.configuration.drive.DriveService;
 import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 import pl.gda.edu.pg.insurance.entity.entity.InsuranceCreationRequest;
 import pl.gda.edu.pg.insurance.entity.entity.InsuranceDownload;
@@ -14,6 +20,7 @@ import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.exception.UserNotFoundException;
 
 import javax.transaction.Transactional;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +29,15 @@ public class InsuranceService {
 
     private final InsuranceRepository insuranceRepository;
     private final UserRepository userRepository;
+    private final DriveService driveService;
+
     private final LossService lossService;
 
-    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository, LossService lossService){
+    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository,@Lazy LossService lossService,@Lazy DriveService driveService){
         this.insuranceRepository = insuranceRepository;
         this.userRepository = userRepository;
         this.lossService = lossService;
+        this.driveService = driveService;
     }
 
     public List<Insurance> findAll() {
@@ -41,6 +51,19 @@ public class InsuranceService {
 
 
         return insuranceRepository.getInsurancesByUser(tmp);
+    }
+
+    public void sendInsuranceWithLossesToGoogleDrive(int id) throws Exception {
+        InsuranceDownload insurance = createDownloadDto(id);
+        ObjectMapper mapper = new ObjectMapper();
+        String insuranceJson = mapper.writeValueAsString(insurance);
+        MultipartFile fichier = new MockMultipartFile("x.json",
+                "insuranceWithLosses.json",
+                "application/json",
+                insuranceJson.getBytes(StandardCharsets.UTF_8));
+
+        driveService.deleteOldInsurance(insurance.getClientEmail(), Integer.toString(insurance.getId()));
+        driveService.addInsuranceWithLosses(fichier, insurance.getClientEmail(), Integer.toString(insurance.getId()));
     }
 
     public Optional<Insurance> findById(int id) { return insuranceRepository.findById(id);}
@@ -59,7 +82,9 @@ public class InsuranceService {
                     .userAgent(null)
                     .build();
 
-            return insuranceRepository.save(tmp);
+            Insurance insurance1 = insuranceRepository.save(tmp);
+            sendInsuranceWithLossesToGoogleDrive(insurance1.getInsuranceId());
+            return insurance1;
         }
         catch(Exception e){
             throw new CreateNewInsuranceException("Creating new insurance failed", e);
@@ -67,14 +92,14 @@ public class InsuranceService {
     }
     @Transactional
     public Insurance updateAgentValue(Insurance insurance, InsuranceUpdateAgentRequest insuranceRequest){
-        Integer agentId = Integer.valueOf(insuranceRequest.getUserAgentId());
-        if(!userRepository.findById(agentId).isPresent()){
-            throw new NoUserWithIdException("Creating new insurance failed, couldn't find client with id: " + agentId);
+        String email = insuranceRequest.getEmail();
+        if(!userRepository.getUserByEmail(email).isPresent()){
+            throw new NoUserWithIdException("Creating new insurance failed, couldn't find client with email: " + email);
         }
 
         try{
-            insurance.setUserAgent(userRepository.findById(agentId).get());
-
+            insurance.setUserAgent(userRepository.getUserByEmail(email).get());
+            sendInsuranceWithLossesToGoogleDrive(insurance.getInsuranceId());
             return insuranceRepository.save(insurance);
         }
         catch(Exception e){
@@ -109,6 +134,7 @@ public class InsuranceService {
                     .clientEmail(userRepository.findById(clientId).get().getEmail())
                     .clientName(userRepository.findById(clientId).get().getName())
                     .clientSurname(userRepository.findById(clientId).get().getSurname())
+                    .losses(insurance.getLoss())
                     .build();
 
             return tmp;
@@ -126,6 +152,7 @@ public class InsuranceService {
                     .agentEmail(userRepository.findById(agentId).get().getEmail())
                     .agentName(userRepository.findById(agentId).get().getName())
                     .agentSurname(userRepository.findById(agentId).get().getSurname())
+                    .losses(insurance.getLoss())
                     .build();
 
             return tmp;

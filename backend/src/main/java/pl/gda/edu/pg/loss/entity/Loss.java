@@ -48,11 +48,12 @@ public class Loss {
 
     @OneToOne(mappedBy = "loss")
     private Appellation appellation;
-    public static Loss CreateRequestToLossMapper(CreateLossRequest createLossRequest)
+    public static Loss CreateRequestToLossMapper(CreateLossRequest createLossRequest, Insurance insurance)
     {
         return Loss.builder()
             .reason(createLossRequest.getReason())
             .reportStage(ReportStage.RECEIVED)
+            .insurance(insurance)
             .build();
     }
 }
