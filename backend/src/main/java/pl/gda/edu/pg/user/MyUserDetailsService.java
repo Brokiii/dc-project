@@ -25,7 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
         return MyUserDetails.builder()
                 .Id(user.getId())
                 .email(user.getEmail())
-                .login(user.getLogin())
+                .login(user.getEmail())
                 .hashedPassword(user.getHashedPassword())
                 .build();
     }

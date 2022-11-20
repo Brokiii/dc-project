@@ -54,6 +54,6 @@ ALTER TABLE
 ALTER TABLE
     "loss" ADD CONSTRAINT "loss_insurance_id_foreign" FOREIGN KEY("insurance_id") REFERENCES "insurance"("id");
 ALTER TABLE
-    "appellation" ADD CONSTRAINT "appellation_loss_reportid_foreign" FOREIGN KEY("loss_reportId") REFERENCES "loss"("id");
+    "appellation" ADD CONSTRAINT "appellation_loss_report_id_foreign" FOREIGN KEY("loss_report_id") REFERENCES "loss"("id");
 
 CREATE SEQUENCE hibernate_sequence START 1;

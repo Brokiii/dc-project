@@ -8,6 +8,7 @@ import pl.gda.edu.pg.insurance.entity.entity.InsuranceUpdateAgentRequest;
 import pl.gda.edu.pg.insurance.entity.exception.CreateNewInsuranceException;
 import pl.gda.edu.pg.insurance.entity.exception.InsuranceNotFoundException;
 import pl.gda.edu.pg.insurance.entity.exception.NoUserWithIdException;
+import pl.gda.edu.pg.loss.LossService;
 import pl.gda.edu.pg.user.UserRepository;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.exception.UserNotFoundException;
@@ -21,10 +22,12 @@ public class InsuranceService {
 
     private final InsuranceRepository insuranceRepository;
     private final UserRepository userRepository;
+    private final LossService lossService;
 
-    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository){
+    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository, LossService lossService){
         this.insuranceRepository = insuranceRepository;
         this.userRepository = userRepository;
+        this.lossService = lossService;
     }
 
     public List<Insurance> findAll() {
@@ -97,7 +100,6 @@ public class InsuranceService {
 
         Insurance insurance = insuranceRepository.findById(id).get();
         int clientId = insurance.getUser().getId();
-
 
         if(insurance.getUserAgent() == null){
             InsuranceDownload tmp = InsuranceDownload.builder()
