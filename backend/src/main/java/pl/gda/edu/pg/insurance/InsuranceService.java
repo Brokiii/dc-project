@@ -21,6 +21,7 @@ import pl.gda.edu.pg.user.exception.UserNotFoundException;
 
 import javax.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +52,16 @@ public class InsuranceService {
 
 
         return insuranceRepository.getInsurancesByUser(tmp);
+    }
+
+    public List<Insurance> getAllInsurancesWithoutAgent() {
+        List<Insurance> insurances = insuranceRepository.getInsurances();
+        List<Insurance> result = new java.util.ArrayList<>(Collections.emptyList());
+        for(Insurance insurance : insurances) {
+            if(insurance.getUserAgent() == null)
+                result.add(insurance);
+        }
+        return result;
     }
 
     public void sendInsuranceWithLossesToGoogleDrive(int id) throws Exception {
