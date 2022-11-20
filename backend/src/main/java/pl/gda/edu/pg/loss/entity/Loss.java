@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.gda.edu.pg.appelation.Appellation;
 import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 
 import javax.persistence.*;
@@ -45,6 +46,8 @@ public class Loss {
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
 
+    @OneToOne(mappedBy = "loss")
+    private Appellation appellation;
     public static Loss CreateRequestToLossMapper(CreateLossRequest createLossRequest)
     {
         return Loss.builder()

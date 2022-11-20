@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.gda.edu.pg.insurance.entity.entity.Insurance;
+import pl.gda.edu.pg.loss.entity.Loss;
 import pl.gda.edu.pg.user.entity.User;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +26,9 @@ import java.util.List;
 
 public class DriveService {
 
+    final private static String ATTACHMENT_LOSS_PATH = "attachmentsLoss/";
+    final private static String ATTACHMENT_INSURANCE_PATH = "attachmentsInsurance/";
+    final private static String POLICIES_PATH = "policies/";
     private final Drive drive;
 
     public List<File> listEverything() throws IOException {
@@ -106,14 +111,32 @@ public class DriveService {
         return addFile(multipartFile, user.getLogin() + "/" + path);
     }
 
-    public String addPolicy(java.io.File file,String filename, User user) throws IOException {
-        MultipartFile multipartFile = new MockMultipartFile(filename, new FileInputStream(file));
+    public String addPolicy(java.io.File file, Insurance insurance, User user) throws IOException {
+        MultipartFile multipartFile = new MockMultipartFile("polisa_" + insurance.getInsuranceId(), new FileInputStream(file));
         return addFile(multipartFile, user.getLogin() + "/policies");
     }
 
     public List<File> getUserPolicies(User user) throws Exception {
         String id = getFolderId(user.getLogin() + "/policies");
         return listFolderContent(id);
+    }
+
+    public String addAttachmentToLossReport(MultipartFile file, Loss loss, String user) {
+        return addFile(file, user + "/" + ATTACHMENT_LOSS_PATH + loss.getId());
+    }
+
+    public String addAttachmentToInsurance(MultipartFile file, Insurance insurance, String user) {
+        return addFile(file, user + "/" + ATTACHMENT_INSURANCE_PATH  + insurance.getInsuranceId());
+    }
+
+    public List<File> getLossReportAttachmentIds(Loss loss, String user) throws Exception {
+        String folderId = getFolderId(user + "/"+ ATTACHMENT_LOSS_PATH + loss.getId());
+        return listFolderContent(folderId);
+    }
+
+    public List<File> getInsuranceAttachmentIds(Insurance insurance, String user) throws Exception {
+        String folderId = getFolderId(user + "/" + ATTACHMENT_INSURANCE_PATH + insurance.getInsuranceId());
+        return listFolderContent(folderId);
     }
 
     public String addFile(MultipartFile file, String filePath) {
