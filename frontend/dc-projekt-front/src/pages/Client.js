@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../css/client.css';
 import UploadButton from "../components/UploadButton";
-
+import useAuth from "../hooks/useAuth";
 
 import {
     Container,
@@ -39,8 +39,6 @@ const useStyles = makeStyles(({
 const Client = () => {
 
     const classes = useStyles();
-    
-
 
     const [fortune1, setFortune1] = useState('');
     const [fortune2, setFortune2] = useState('');
@@ -49,6 +47,83 @@ const Client = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+    }
+    const navigate = useNavigate();
+    const { auth, setAuth } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+
+
+
+    const downloadInsurances = async (event) => {
+        event.preventDefault();
+
+        const token = 'JWT ' + localStorage.getItem("token");
+        const requestOptions = {
+            method: 'GET',
+            params: {'email': email},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+             }
+        };
+        try {
+            await fetch("http://localhost:8081/api/insurance/all", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                //const token = data?.jwt;
+                //const email = data?.email;
+                //const type = data?.accountType;
+                //localStorage.setItem('token', token);
+                //localStorage.setItem('email', email);
+                //localStorage.setItem('type', type);
+                //console.log(data);
+                //setAuth({ token: token, email: email, type:type})
+            })
+            //navigate("/home");
+            //window.location.reload();
+            setError(false);
+        }
+        catch (err) {
+            setError(true);
+        }
+    }
+
+    const downloadOneInsurance = async (event) => {
+        event.preventDefault();
+
+        const token = 'JWT ' + localStorage.getItem("token");
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+             }
+        };
+        try {
+            await fetch("http://localhost:8081/api/insurance/16", requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                const insuranceId = data?.insuranceId;
+
+                console.log(data);
+                //const token = data?.jwt;
+                //const email = data?.email;
+                //const type = data?.accountType;
+                //localStorage.setItem('token', token);
+                //localStorage.setItem('email', email);
+                //localStorage.setItem('type', type);
+                //console.log(data);
+                //setAuth({ token: token, email: email, type:type})
+            })
+            //navigate("/home");
+            //window.location.reload();
+            setError(false);
+        }
+        catch (err) {
+            setError(true);
+        }
     }
 
     return (
@@ -149,7 +224,9 @@ const Client = () => {
                 <a href="https://drive.google.com/file/d/1nkn7_3VM3XBs7ZtWoAtbZkyn0dKoflFe/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
                     <button className="button-client"> Otrzymaj polisę na email</button>
                 </a>
-                
+
+                <button className="button-client" onClick={downloadOneInsurance}> Test</button>
+
             </Container>
 
             <Container fixed className={classes.section}>
