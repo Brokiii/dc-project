@@ -1,7 +1,8 @@
 package pl.gda.edu.pg.insurance;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,15 @@ import pl.gda.edu.pg.insurance.entity.exception.CreateNewInsuranceException;
 import pl.gda.edu.pg.insurance.entity.exception.InsuranceNotFoundException;
 import pl.gda.edu.pg.insurance.entity.exception.NoUserWithIdException;
 import pl.gda.edu.pg.loss.LossService;
+import pl.gda.edu.pg.loss.entity.Loss;
 import pl.gda.edu.pg.user.UserRepository;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.exception.UserNotFoundException;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +57,49 @@ public class InsuranceService {
 
 
         return insuranceRepository.getInsurancesByUser(tmp);
+    }
+
+    public ByteArrayInputStream createPdfFromInsurance(int id) throws FileNotFoundException, DocumentException {
+        InsuranceDownload insurance = createDownloadDto(id);
+
+        Document document = new Document();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        PdfWriter.getInstance(document, out);
+        document.open();
+
+        Font font26 = FontFactory.getFont(FontFactory.COURIER, 26, BaseColor.BLACK);
+        Font font20 = FontFactory.getFont(FontFactory.COURIER, 20, BaseColor.BLACK);
+
+        List<Paragraph> paragraphs = List.of(
+                new Paragraph("Insurance"+ "\n", font26),
+                new Paragraph("Insurance id: " + insurance.getId() + "\n", font20),
+                new Paragraph("Good type: " + insurance.getGoodType(), font20),
+                new Paragraph("Insurance type: " + insurance.getInsuranceType(), font20),
+                new Paragraph("Client email: " + insurance.getClientEmail(), font20),
+                new Paragraph("Client surname: " + insurance.getClientSurname(), font20),
+                new Paragraph("Agent email: " + insurance.getAgentEmail(), font20),
+                new Paragraph("Agent name: " + insurance.getAgentName(), font20),
+                new Paragraph("Agent surname: " + insurance.getAgentSurname(), font20)
+        );
+        for(Paragraph paragraph : paragraphs) {
+            document.add(paragraph);
+        }
+
+        document.add(Chunk.NEWLINE);
+        document.add(new Paragraph("LOSSES", font26));
+
+        for(Loss loss : insurance.getLosses()) {
+            document.add(Chunk.NEWLINE);
+            document.add(new Paragraph("Loss id: " + loss.getId(), font20));
+            document.add(new Paragraph("Report stage: " + loss.getReportStage(), font20));
+            document.add(new Paragraph("Decision comment: " + loss.getDecisionComment(), font20));
+            document.add(new Paragraph("Reason: " + loss.getReason(), font20));
+            document.add(new Paragraph("Appelation: " + loss.getAppellation(), font20));
+        }
+
+        document.close();
+        return new ByteArrayInputStream(out.toByteArray());
     }
 
     public List<Insurance> getAllInsurancesWithoutAgent() {
