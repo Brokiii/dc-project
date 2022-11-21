@@ -61,7 +61,7 @@ function Navbar() {
     {
       setIsLogged(false);
     }
-}, [])
+  }, [])
 
   console.log(auth?.token);
   function logout() {
@@ -89,15 +89,26 @@ function Navbar() {
           {!isLogged ?
           <Link to="/signup" className={classes.link}>
             Rejestracja
-          </Link>: <></>}
+          </Link>
+          : 
+          <></>
+          }
           <Link to="/contact" className={classes.link}>
             Kontakt
           </Link>
-          {(localStorage.getItem("token") === null) ? 
+          {(isLogged && localStorage.getItem("type") === "client") ?
+          <></>:<></>//<Link to="/client"></Link>:<></>
+          }
+          {(isLogged && localStorage.getItem("type") === "client") ?
+          <Link to="/losses" className={classes.link}>Szkody</Link>:<></>//<Link to="/client"></Link>:<></>
+          }
+          {!isLogged ? 
           <Link to="/login" className={classes.link}>
             Logowanie
-          </Link> : 
-          <button className={classes.button} onClick={logout}>Wyloguj</button>}
+          </Link> 
+          : 
+          <button className={classes.button} onClick={logout}>Wyloguj</button>
+          }
         </div>
       </Toolbar>
     </AppBar>
