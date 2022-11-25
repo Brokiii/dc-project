@@ -188,7 +188,7 @@ const Client = () => {
              },
              body: JSON.stringify({
                  'goodType': fortune1,
-                 'insuranceType': insuranceType1,
+                 'insuranceType': insuranceType,
                  'email': localStorage.getItem("email")
              })
         };
@@ -220,7 +220,7 @@ const Client = () => {
              }
         };
         try {
-            const request = "http://localhost:8081/api/insurance" + "/44";
+            const request = "http://localhost:8081/api/insurance" + "/51";
             await fetch(request, requestOptions)
             .then(response => response.json())
             .then(data => {
