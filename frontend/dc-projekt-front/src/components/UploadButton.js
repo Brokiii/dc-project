@@ -8,9 +8,6 @@ const Button = styled.button`
 const UploadButton = props => {
   const hiddenFileInput = React.useRef(null);
 
-  const handleClick = event => {
-    hiddenFileInput.current.click();
-  };
   const handleChange = event => {
     const fileUploaded = event.target.files[0];
     props.handleFile(fileUploaded);
@@ -18,7 +15,7 @@ const UploadButton = props => {
   return (
     <>
       <div className="client-button-box">             
-      <Button className="button-upload" onClick={handleClick}>
+      <Button className="button-upload">
         <input type="file"
              ref={hiddenFileInput}
              onChange={handleChange}
