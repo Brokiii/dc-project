@@ -48,6 +48,7 @@ const Client = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
     }
+
     const navigate = useNavigate();
     const { auth, setAuth } = useAuth();
     const [email, setEmail] = useState('');
@@ -56,7 +57,7 @@ const Client = () => {
 
 
 
-    const downloadInsurances = async (event) => {
+    const getInsurances = async (event) => {
         event.preventDefault();
 
         const token = 'JWT ' + localStorage.getItem("token");
@@ -90,7 +91,7 @@ const Client = () => {
         }
     }
 
-    const downloadOneInsurance = async (event) => {
+    const getOneInsurance = async (event) => {
         event.preventDefault();
 
         const token = 'JWT ' + localStorage.getItem("token");
@@ -102,7 +103,7 @@ const Client = () => {
              }
         };
         try {
-            await fetch("http://localhost:8081/api/insurance/16", requestOptions)
+            await fetch("http://localhost:8081/api/insurance/24", requestOptions)
             .then(response => response.json())
             .then(data => {
                 const insuranceId = data?.insuranceId;
@@ -119,6 +120,37 @@ const Client = () => {
             })
             //navigate("/home");
             //window.location.reload();
+            setError(false);
+        }
+        catch (err) {
+            setError(true);
+        }
+    }
+
+
+    const downloadInsurance = async (event) => {
+        event.preventDefault();
+
+        const token = 'JWT ' + localStorage.getItem("token");
+        const requestOptions = {
+            method: 'GET',
+            params: {'id': 24},
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+             }
+        };
+        try {
+            await fetch("http://localhost:8081/api/insurance/pdf?id=24", requestOptions)
+              .then((response) => response.blob())
+                .then((blob) => {
+
+                 //Build a URL from the file
+                     const fileURL = URL.createObjectURL(blob);
+
+                 //Open the URL on new Window
+                     window.open(fileURL);
+                })
             setError(false);
         }
         catch (err) {
@@ -215,17 +247,9 @@ const Client = () => {
 
             <Container fixed className={classes.section}>
                 <h2>Polisa ubezpieczeniowa</h2>
+
                 <Link to="/insurance"><button className="button-login">Skorzystaj z ubezpieczenia</button></Link>
-
-                <a href="https://drive.google.com/file/d/1KYoZNbAx4FYqlTyPlE-wkUnw17NG5LVl/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
-                    <button className="button-client"> Pobierz polisę ubezpieczeniową</button>
-                </a>
-
-                <a href="https://drive.google.com/file/d/1nkn7_3VM3XBs7ZtWoAtbZkyn0dKoflFe/view?usp=share_link" download="Rishabh's Resume" target='_blank'>
-                    <button className="button-client"> Otrzymaj polisę na email</button>
-                </a>
-
-                <button className="button-client" onClick={downloadOneInsurance}> Test</button>
+                <button className="button-client" onClick={downloadInsurance}> Pobierz polisę ubezpieczeniową</button>
 
             </Container>
 
