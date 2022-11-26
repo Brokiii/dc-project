@@ -7,6 +7,9 @@ import Insurance from "./pages/Insurance";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Loss from "./pages/Loss";
+import Losses from "./pages/Losses";
+import FreeInsurances from "./pages/FreeInsurances";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/insurance" element={<Insurance/>} />
             <Route path="/contact" element={<Contact/>} />
+            <Route path="/losses" element={<Losses/>} />
+            <Route path="/freeInsurences" element={<FreeInsurances/>} />
+            <Route path="/loss/:id" element={<Loss/>} />
             <Route path="*" element={<Home/>} />
           </Routes>
         <Footer />

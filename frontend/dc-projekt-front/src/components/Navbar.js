@@ -93,11 +93,42 @@ function Navbar() {
           <Link to="/contact" className={classes.link}>
             Kontakt
           </Link>
-          {(localStorage.getItem("token") === null) ? 
-          <Link to="/login" className={classes.link}>
-            Logowanie
-          </Link> : 
-          <button className={classes.button} onClick={logout}>Wyloguj</button>}
+          {
+          (localStorage.getItem("token") !== null && localStorage.getItem("type") === "client") 
+          ? 
+            <Link to="/losses" className={classes.link}>
+              Ubezpieczenia
+            </Link> 
+          : 
+            <></>
+          }
+          {
+          (localStorage.getItem("token") !== null && localStorage.getItem("type") === "agent") 
+          ? 
+            <Link to="/freeInsurences" className={classes.link}>
+              Wolne szkody
+            </Link> 
+          : 
+            <></>
+          }
+          {
+          (localStorage.getItem("token") !== null && localStorage.getItem("type") === "agent") 
+          ? 
+            <Link to="/myLosses" className={classes.link}>
+              Moje szkody
+            </Link> 
+          : 
+            <></>
+          }
+          {
+          (localStorage.getItem("token") === null) 
+          ? 
+            <Link to="/login" className={classes.link}>
+              Logowanie
+            </Link> 
+          : 
+            <button className={classes.button} onClick={logout}>Wyloguj</button>
+          }
         </div>
       </Toolbar>
     </AppBar>
