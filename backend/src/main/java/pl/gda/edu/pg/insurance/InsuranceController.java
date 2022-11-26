@@ -1,12 +1,15 @@
 package pl.gda.edu.pg.insurance;
 
 import com.google.api.services.drive.model.File;
+import com.itextpdf.text.DocumentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,9 @@ import pl.gda.edu.pg.insurance.entity.entity.InsuranceUpdateAgentRequest;
 import pl.gda.edu.pg.loss.LossService;
 import pl.gda.edu.pg.loss.entity.Loss;
 
+import javax.mail.MessagingException;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
@@ -75,6 +81,20 @@ public class InsuranceController {
     public ResponseEntity<List<Insurance>> getInsurancesWithoutAgent() {
         List<Insurance> insurances = insuranceService.getAllInsurancesWithoutAgent();
         return new ResponseEntity<>(insurances, HttpStatus.OK);
+    }
+
+    @GetMapping("/pdf")
+    public ResponseEntity<InputStreamResource> getPdfFromInsurance(
+            @RequestParam int id
+    ) throws DocumentException, FileNotFoundException, MessagingException {
+        ByteArrayInputStream bis = insuranceService.createPdfFromInsurance(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=insurance.pdf");
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 
     @GetMapping("/{id}/download")
