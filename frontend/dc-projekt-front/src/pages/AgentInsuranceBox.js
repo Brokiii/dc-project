@@ -2,9 +2,9 @@ import { Link, useNavigate, useLocation, useSearchParams } from "react-router-do
 import { useRef, useState, useEffect } from 'react';
 import useAuth from "../hooks/useAuth";
 import '../css/insuranceBox.css';
-import LossBox from "./LossBox";
+import AgentLossBox from "./AgentLossBox";
 
-const InsuranceBox = (props) => {
+const AgentInsuranceBox = (props) => {
     const insuranceID = props.insurance.insuranceId;
     const [error, setError] = useState(false);
     const [insurance, setInsurance] = useState(null);
@@ -52,57 +52,6 @@ const InsuranceBox = (props) => {
             setError(true);
         }
     }
-
-    const addAgent = async (event) => {
-        event.preventDefault();
-        const email = localStorage.getItem("email")
-        const jsonToSend = JSON.stringify({
-            email:email
-        });
-
-        const token = 'JWT ' + localStorage.getItem("token");
-        const requestOptions = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
-             },
-            body: jsonToSend
-        };
-        try {
-            await fetch("http://localhost:8081/api/insurance/"+insuranceID, requestOptions)
-              .then((response) => response.json())
-
-            setError(false);
-        }
-        catch (err) {
-            setError(true);
-        }
-    }
-
-    const deleteInsurance = async (event) => {
-        event.preventDefault();
-        const email = localStorage.getItem("email")
-
-        const token = 'JWT ' + localStorage.getItem("token");
-        const requestOptions = {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
-             },
-        };
-        try {
-            await fetch("http://localhost:8081/api/insurance/"+insuranceID, requestOptions)
-              .then((response) => response.json())
-
-            setError(false);
-        }
-        catch (err) {
-            setError(true);
-        }
-    }
-
 
     useEffect(() => {
         const requestOptions = {
@@ -157,26 +106,11 @@ const InsuranceBox = (props) => {
                     </div>
 
                     <div className="buttons">
-                    {
-                    localStorage.getItem("type") === "client"
-                    &&
-                    <Link to={"/loss/" + insurance.id}>
-                        <button className="button-login">Zgłoś szkodę</button>
-                    </Link>
-                    }
-                    {
-                    localStorage.getItem("type") === "agent" 
-                    &&
-
-                    <button className="button-login" onClick={addAgent}>Przypisz</button>
-
-                    }
-                    {losses.length === 0 && localStorage.getItem("type") === "client"  && <button className="button-login" onClick={deleteInsurance}>Odowłaj polise</button>}
                     <button className="button-login" onClick={downloadInsurance}>PDF</button>
                     </div>
 
                 </div>
-                {localStorage.getItem("type") === "client" &&
+                
                 <div className="losses">
                     <div>
                         <input
@@ -187,11 +121,9 @@ const InsuranceBox = (props) => {
                         onBlur={(e) => setSearchText(e.target.value)}
                         />
                     </div>
-                    Szkody:{filteredLosses && filteredLosses.map((loss) => (<LossBox loss={loss} />))}
+                    Szkody:{filteredLosses && filteredLosses.map((loss) => (<AgentLossBox loss={loss} />))}
                 
                 </div>
-                }
-                {localStorage.getItem("type") === "agent" && <div className="puste"></div>}
             </div>
             }
         </div>
@@ -199,4 +131,4 @@ const InsuranceBox = (props) => {
     );
 }
 
-export default InsuranceBox;
+export default  AgentInsuranceBox;

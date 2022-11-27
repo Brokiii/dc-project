@@ -2,46 +2,42 @@ import { Link, useNavigate, useLocation, useSearchParams } from "react-router-do
 import { useRef, useState, useEffect } from 'react';
 import useAuth from "../hooks/useAuth";
 import '../css/lossBox.css';
+import Select from 'react-select'
 
 const LossBox = (props) => {
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [files, setFiles] = useState([]);
     const [error, setError] = useState(null);
+    const [status, setStatus] = useState("RECEVIED");
     const loss = props.loss;
-
-
-    const changeFile = async (event)=>{
-        event.preventDefault();
-        const file = event.target.files[0];
-        console.log(file);
-        if(!file)return;
-        setSelectedFile(file); 
+    const options = [
+        { value: 'RECEIVED', label: 'Recevied'},
+        { value: 'REVIEVED', label: 'Revieved'},
+        { value: 'CLOSED', label: 'Closed'}
+    ]
+    const handleChange = async (option) => {
+        console.log(option);
+        setStatus(option.value);
     }
 
-    const uploadFile = async (event) => {
+    const changeStatus = async (event) => {
         event.preventDefault();
-        const file = selectedFile;
-        const formData = new FormData();
-        formData.append(
-            "newFile",
-            file,
-            file.name
-        );
-
+        const jsonToSend = JSON.stringify({
+            lossId: loss.id,
+            status
+        });
+        console.log(jsonToSend);
         const requestOptions = {
-            method: 'POST',
+            method: 'PUT',
             headers: { 
-                'Content-Type': 'multipart/form-data;',
+                'Content-Type': 'application/json',
                 'Authorization': 'JWT '+ localStorage.getItem("token")
             },
-            body:formData
+            body: jsonToSend
         };
+
         try {
-            await fetch("http://localhost:8081/api/loss/addAttachment?lossId="+loss.id, requestOptions)
+            await fetch("http://localhost:8081/api/loss", requestOptions)
               .then((response) => response.json())
-              .then(() => {
-                setFiles([...files,file])
-              })
+              .then(() => {})
 
             setError(false);
         }
@@ -70,15 +66,8 @@ const LossBox = (props) => {
                     <td>{loss.reportStage}</td>
                 </tr>
             </table>
-            <input type="file" onChange={changeFile}/>
-            <button className="button-login" onClick={uploadFile}>Dodaj plik</button>
-            <div>
-                <h2>Pliki:</h2>
-                {files && files.map((file)=>
-                <div><span>{file.name}</span><br/></div>
-                )}
-
-            </div>
+            <Select options={options} onChange={handleChange} />
+            <button className="button-login" onClick={changeStatus}>Zmień status</button>
         </div>
         );
 }

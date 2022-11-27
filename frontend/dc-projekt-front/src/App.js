@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Loss from "./pages/Loss";
 import Losses from "./pages/Losses";
 import FreeInsurances from "./pages/FreeInsurances";
+import AgentLosses from "./pages/AgentLosses";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/insurance" element={<Insurance/>} />
             <Route path="/contact" element={<Contact/>} />
             <Route path="/losses" element={<Losses/>} />
+            <Route path="/myLosses" element={<AgentLosses/>} />
             <Route path="/freeInsurences" element={<FreeInsurances/>} />
             <Route path="/loss/:id" element={<Loss/>} />
             <Route path="*" element={<Home/>} />

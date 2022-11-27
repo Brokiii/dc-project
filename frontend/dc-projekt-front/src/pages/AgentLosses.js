@@ -6,7 +6,7 @@ import {
     Typography,
     makeStyles,
 } from "@material-ui/core";
-import InsuranceBox from "./InsuranceBox";
+import AgentInsuranceBox from "./AgentInsuranceBox";
 
 
 const useStyles = makeStyles(({
@@ -29,7 +29,7 @@ const useStyles = makeStyles(({
     },
 }));
 
-const Losses = () => {
+const AgentLosses = () => {
     const [error, setError] = useState(false);
     const [insurances, setInsurances] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -42,7 +42,7 @@ const Losses = () => {
             },
         };
         try {
-            fetch("http://localhost:8081/api/insurance/all/user?email="+localStorage.getItem("email"), requestOptions)
+            fetch("http://localhost:8081/api/insurance/all/agent?email="+localStorage.getItem("email"), requestOptions)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
@@ -63,10 +63,10 @@ const Losses = () => {
         <Container fixed className={classes.root}>
             {error && <span>Nie udało się załadować</span>}
             {!isLoaded && <span>Ładowanie...</span>}
-            {isLoaded && insurances.map((insurance)=>(<InsuranceBox insurance={insurance}/>))}
+            {isLoaded && insurances.map((insurance)=>(<AgentInsuranceBox insurance={insurance}/>))}
         </Container>
     );
 
 }
 
-export default Losses;
+export default AgentLosses;
