@@ -133,7 +133,7 @@ public class DriveService {
     }
 
     public String addAttachmentToInsurance(MultipartFile file, Insurance insurance, String user) {
-        return addFile(file, user + "/" + ATTACHMENT_INSURANCE_PATH  + insurance.getInsuranceId());
+        return addFile(file, user + "/insurance/" + insurance.getInsuranceId());
     }
 
     public String addInsuranceWithLosses(MultipartFile file, String user, String insuranceId) {
@@ -157,7 +157,7 @@ public class DriveService {
     }
 
     public List<File> getInsuranceAttachmentIds(Insurance insurance, String user) throws Exception {
-        String folderId = getFolderId(user + "/" + ATTACHMENT_INSURANCE_PATH + insurance.getInsuranceId());
+        String folderId = getFolderId(user + "/insurance/" + insurance.getInsuranceId());
         return listFolderContent(folderId);
     }
 
