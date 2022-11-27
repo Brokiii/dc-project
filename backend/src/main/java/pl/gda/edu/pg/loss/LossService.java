@@ -9,6 +9,7 @@ import pl.gda.edu.pg.insurance.entity.entity.Insurance;
 import pl.gda.edu.pg.insurance.entity.exception.InsuranceNotFoundException;
 import pl.gda.edu.pg.loss.entity.CreateLossRequest;
 import pl.gda.edu.pg.loss.entity.Loss;
+import pl.gda.edu.pg.loss.entity.UpdateLossStatusRequest;
 import pl.gda.edu.pg.loss.excpeption.LossNotFoundException;
 
 import java.util.List;
@@ -37,6 +38,13 @@ public class LossService {
         } else {
             throw new LossNotFoundException("Loss not found");
         }
+    }
+
+    public Loss updateStatus(UpdateLossStatusRequest request) throws Exception {
+        Loss loss = read(request.getLossId());
+        loss.setReportStage(request.getStatus());
+        insuranceService.sendInsuranceWithLossesToGoogleDrive(loss.getInsurance().getInsuranceId());
+        return lossRepository.save(loss);
     }
 
     public Loss update(Loss loss) {

@@ -61,7 +61,7 @@ function Navbar() {
     {
       setIsLogged(false);
     }
-}, [])
+  }, [])
 
   console.log(auth?.token);
   function logout() {
@@ -89,7 +89,10 @@ function Navbar() {
           {!isLogged ?
           <Link to="/signup" className={classes.link}>
             Rejestracja
-          </Link>: <></>}
+          </Link>
+          : 
+          <></>
+          }
           <Link to="/contact" className={classes.link}>
             Kontakt
           </Link>

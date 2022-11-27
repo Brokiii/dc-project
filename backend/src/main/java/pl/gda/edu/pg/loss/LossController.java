@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.gda.edu.pg.configuration.drive.DriveService;
 import pl.gda.edu.pg.loss.entity.CreateLossRequest;
 import pl.gda.edu.pg.loss.entity.Loss;
+import pl.gda.edu.pg.loss.entity.UpdateLossStatusRequest;
 
 import java.util.List;
 
@@ -40,6 +41,11 @@ public class LossController {
     public ResponseEntity delete(@RequestParam int lossId) {
         lossService.delete(lossId);
         return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Loss> updateLossStatus(@RequestBody UpdateLossStatusRequest updateLossStatusRequest) throws Exception {
+        return ResponseEntity.ok(lossService.updateStatus(updateLossStatusRequest));
     }
 
 

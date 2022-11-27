@@ -24,6 +24,7 @@ import pl.gda.edu.pg.insurance.entity.entity.InsuranceUpdateAgentRequest;
 import pl.gda.edu.pg.loss.LossService;
 import pl.gda.edu.pg.loss.entity.Loss;
 
+import javax.mail.MessagingException;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,9 +42,15 @@ public class InsuranceController {
 
     private final DriveService driveService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Insurance>> getAllInsurances(@RequestParam String email) {
+    @GetMapping("/all/user")
+    public ResponseEntity<List<Insurance>> getAllInsurancesForUser(@RequestParam String email) {
         List<Insurance> allInsurances = insuranceService.findAllForUser(email);
+        return new ResponseEntity<>(allInsurances, HttpStatus.OK);
+    }
+
+    @GetMapping("/all/agent")
+    public ResponseEntity<List<Insurance>> getAllInsurancesForAgent(@RequestParam String email) {
+        List<Insurance> allInsurances = insuranceService.findAllForAgent(email);
         return new ResponseEntity<>(allInsurances, HttpStatus.OK);
     }
 
@@ -85,7 +92,7 @@ public class InsuranceController {
     @GetMapping("/pdf")
     public ResponseEntity<InputStreamResource> getPdfFromInsurance(
             @RequestParam int id
-    ) throws DocumentException, FileNotFoundException {
+    ) throws DocumentException, FileNotFoundException, MessagingException {
         ByteArrayInputStream bis = insuranceService.createPdfFromInsurance(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=insurance.pdf");

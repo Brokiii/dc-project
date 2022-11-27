@@ -17,13 +17,16 @@ import pl.gda.edu.pg.insurance.entity.exception.InsuranceNotFoundException;
 import pl.gda.edu.pg.insurance.entity.exception.NoUserWithIdException;
 import pl.gda.edu.pg.loss.LossService;
 import pl.gda.edu.pg.loss.entity.Loss;
+import pl.gda.edu.pg.mail.MailService;
 import pl.gda.edu.pg.user.UserRepository;
 import pl.gda.edu.pg.user.entity.User;
 import pl.gda.edu.pg.user.exception.UserNotFoundException;
 
+import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -36,14 +39,15 @@ public class InsuranceService {
     private final InsuranceRepository insuranceRepository;
     private final UserRepository userRepository;
     private final DriveService driveService;
-
+    private final MailService mailService;
     private final LossService lossService;
 
-    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository,@Lazy LossService lossService,@Lazy DriveService driveService){
+    public InsuranceService(InsuranceRepository insuranceRepository, UserRepository userRepository,@Lazy LossService lossService,@Lazy DriveService driveService, MailService mailService){
         this.insuranceRepository = insuranceRepository;
         this.userRepository = userRepository;
         this.lossService = lossService;
         this.driveService = driveService;
+        this.mailService = mailService;
     }
 
     public List<Insurance> findAll() {
@@ -59,7 +63,16 @@ public class InsuranceService {
         return insuranceRepository.getInsurancesByUser(tmp);
     }
 
-    public ByteArrayInputStream createPdfFromInsurance(int id) throws FileNotFoundException, DocumentException {
+    public List<Insurance> findAllForAgent(String email) {
+
+        User tmp = userRepository.getUserByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User not found!"));
+
+
+        return insuranceRepository.getInsurancesByUserAgent(tmp);
+    }
+
+    public ByteArrayInputStream createPdfFromInsurance(int id) throws FileNotFoundException, DocumentException, MessagingException {
         InsuranceDownload insurance = createDownloadDto(id);
 
         Document document = new Document();
@@ -97,7 +110,6 @@ public class InsuranceService {
             document.add(new Paragraph("Reason: " + loss.getReason(), font20));
             document.add(new Paragraph("Appelation: " + loss.getAppellation(), font20));
         }
-
         document.close();
         return new ByteArrayInputStream(out.toByteArray());
     }
