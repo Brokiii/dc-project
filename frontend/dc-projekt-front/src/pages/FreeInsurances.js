@@ -63,7 +63,7 @@ const FreeInsurances = () => {
         <Container fixed className={classes.root}>
             {error && <span>Nie udało się załadować</span>}
             {!isLoaded && <span>Ładowanie...</span>}
-            {isLoaded && insurances.map((insurance)=>(<InsuranceBox insurance={insurance}/>))}
+            {isLoaded && insurances && insurances.map((insurance)=>(<InsuranceBox insurance={insurance}/>))}
         </Container>
     );
 

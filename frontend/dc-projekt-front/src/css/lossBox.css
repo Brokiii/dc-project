@@ -1,0 +1,9 @@
+.lossBox{
+    background-color: darkgray;
+    margin: 10px;
+    margin-left:0px;
+}
+td{
+    background-color: blanchedalmond;
+    border-bottom: 2px solid black;
+}

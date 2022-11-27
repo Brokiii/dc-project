@@ -1,0 +1,32 @@
+.Box{
+    background-color: grey;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 20px;
+}
+.table{
+    float: left;
+    background-color: antiquewhite;
+    border:2px solid black ;
+}
+.buttons{
+    float: right;
+}
+.heading{
+    width: 100%;
+}
+.losses{
+    padding-top: 100px;
+
+}
+
+th{
+    border:2px solid black ;
+}
+.searchInput{
+margin: 5px;
+margin-left: 0px;
+  padding: 6px;
+  font-size: 17px;
+  border: none;
+}
