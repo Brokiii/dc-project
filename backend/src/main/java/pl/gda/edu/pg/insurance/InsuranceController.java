@@ -42,9 +42,15 @@ public class InsuranceController {
 
     private final DriveService driveService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Insurance>> getAllInsurances(@RequestParam String email) {
+    @GetMapping("/all/user")
+    public ResponseEntity<List<Insurance>> getAllInsurancesForUser(@RequestParam String email) {
         List<Insurance> allInsurances = insuranceService.findAllForUser(email);
+        return new ResponseEntity<>(allInsurances, HttpStatus.OK);
+    }
+
+    @GetMapping("/all/agent")
+    public ResponseEntity<List<Insurance>> getAllInsurancesForAgent(@RequestParam String email) {
+        List<Insurance> allInsurances = insuranceService.findAllForAgent(email);
         return new ResponseEntity<>(allInsurances, HttpStatus.OK);
     }
 

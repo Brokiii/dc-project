@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface InsuranceRepository extends CrudRepository<Insurance, Integer> {
-
+    List<Insurance> getInsurancesByUserAgent(User user);
     List<Insurance> getInsurancesByUser(User user);
     @Query("SELECT i FROM Insurance i")
     List<Insurance> getInsurances();
