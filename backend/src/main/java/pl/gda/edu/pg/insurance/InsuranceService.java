@@ -63,6 +63,15 @@ public class InsuranceService {
         return insuranceRepository.getInsurancesByUser(tmp);
     }
 
+    public List<Insurance> findAllForAgent(String email) {
+
+        User tmp = userRepository.getUserByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User not found!"));
+
+
+        return insuranceRepository.getInsurancesByUserAgent(tmp);
+    }
+
     public ByteArrayInputStream createPdfFromInsurance(int id) throws FileNotFoundException, DocumentException, MessagingException {
         InsuranceDownload insurance = createDownloadDto(id);
 
