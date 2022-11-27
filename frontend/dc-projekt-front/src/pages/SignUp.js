@@ -53,7 +53,7 @@ const SignUp = () => {
                 surname,
                 email,
                 password,
-                accountType: "agent"
+                accountType
             });
             console.log(jsonToSend);
             const requestOptions = {

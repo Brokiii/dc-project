@@ -160,9 +160,12 @@ const InsuranceBox = (props) => {
                     {
                     localStorage.getItem("type") === "client"
                     &&
-                    <Link to={"/loss/" + insurance.id}>
-                        <button className="button-login">Zgłoś szkodę</button>
-                    </Link>
+                    <div>
+                        <Link to={"/loss/" + insurance.id}>
+                            <button className="button-login">Zgłoś szkodę</button>
+                        </Link>
+                        <button className="button-login">Email</button>
+                    </div>
                     }
                     {
                     localStorage.getItem("type") === "agent" 

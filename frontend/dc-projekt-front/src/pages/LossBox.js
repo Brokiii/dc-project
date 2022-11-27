@@ -21,9 +21,10 @@ const LossBox = (props) => {
     const uploadFile = async (event) => {
         event.preventDefault();
         const file = selectedFile;
+        console.log(file);
         const formData = new FormData();
         formData.append(
-            "newFile",
+            "file",
             file,
             file.name
         );
@@ -31,7 +32,7 @@ const LossBox = (props) => {
         const requestOptions = {
             method: 'POST',
             headers: { 
-                'Content-Type': 'multipart/form-data;',
+                'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
                 'Authorization': 'JWT '+ localStorage.getItem("token")
             },
             body:formData

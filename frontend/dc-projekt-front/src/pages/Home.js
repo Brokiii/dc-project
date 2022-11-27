@@ -52,10 +52,7 @@ const Home = () => {
           <h1>Skorzystaj z naszego ubezpieczenia.</h1>
           <Link to="/insurance"><button className="button-login">Skorzystaj z ubezpieczenia</button></Link>
         </Container>
-        <Container fixed className={classes.section}>
-          <h1>Zgłoś szkodę.</h1>
-          <Link to="/loss"><button className="button-login">Zgłoś szkodę</button></Link>
-        </Container> </div> :
+       </div> :
         <></>
       }
     </Container>

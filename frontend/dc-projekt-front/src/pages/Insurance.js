@@ -11,6 +11,7 @@ const Insurance = () => {
     const { auth, setAuth } = useAuth();
     const [email, setEmail] = useState(localStorage.getItem("email"));
     const [insuranceType, setInsuranceType] = useState(null);
+    const [goodType, setGoodType] = useState("");
     const [price, setPrice] = useState(0);
     const [error, setError] = useState(false);
 
@@ -30,7 +31,7 @@ const Insurance = () => {
         event.preventDefault();
 
         const jsonToSend = JSON.stringify({
-            goodType: "JD",
+            goodType,
             insuranceType,
             email
         });
@@ -65,6 +66,13 @@ const Insurance = () => {
             <br />
             <br />
             <form onSubmit={handleSubmit}>
+                <label class="label-insurance"> Typ dobra:</label>
+                <br/>
+                <input
+                value={goodType}
+                onChange={(e) => setGoodType(e.target.value)}
+                />
+                <br/>
                 <label class="label-insurance"> Typ ubezpieczenia:</label>
                 <Select options={options} onChange={handleChange} />
                 <label class="label-price">Cena:{price} zł</label>
